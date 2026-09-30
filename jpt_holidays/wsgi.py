@@ -16,7 +16,15 @@ if os.getenv('VERCEL') or 'VERCEL' in os.environ:
                 call_command('seed_data')
             except Exception as e:
                 print("Auto-seed error:", e)
+        
+        staticfiles_dir = '/tmp/staticfiles'
+        if not os.path.exists(staticfiles_dir):
+            try:
+                call_command('collectstatic', interactive=False, clear=True)
+            except Exception as se:
+                print("Auto-collectstatic error:", se)
     except Exception as err:
         print("Auto-migrate error:", err)
+
 
 
