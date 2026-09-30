@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Operations Desk | JPT Holidays Admin{% endblock %}</title>
+  
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: var(--color-navy);
+      color: #FFFFFF;
+      padding: 1.75rem 1.25rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sidebar-menu {
+      list-style: none;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-slate-300);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      background: var(--color-navy-light);
+      color: #FFFFFF;
+    }
+    .sidebar-link.active {
+      background: var(--color-gold);
+      color: #FFFFFF;
+    }
+    .dashboard-main {
+      background: var(--color-slate-50);
+      padding: 2rem 2.5rem;
+    }
+    .stat-card {
+      background: #FFFFFF;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-slate-200);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-navy);
+      margin-top: 0.3rem;
+    }
+    @media (max-width: 900px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a href="{% url 'dashboard:index' %}" class="dashboard-logo-link" style="display: block; margin-bottom: 1.25rem;">
+        <img src="{% static 'images/logo-white.svg' %}" alt="JPT Holidays Operations Desk" style="height: 44px; width: auto; max-width: 100%;">
+      </a>
+
+      <div style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); font-size: 0.85rem;">
+        <p style="color: #FFFFFF; font-weight: 600;">{{ request.user.get_full_name|default:request.user.username }}</p>
+        <p style="color: var(--color-sky); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">{{ request.user.get_role_display }}</p>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="{% url 'dashboard:index' %}" class="sidebar-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+            📊 Overview Stats
+          </a>
+        </li>
+        {% if request.user.is_booking_staff or request.user.is_admin_owner %}
+          <li>
+            <a href="{% url 'dashboard:bookings' %}" class="sidebar-link {% if 'bookings' in request.path %}active{% endif %}">
+              📋 Booking Requests
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'dashboard:enquiries' %}" class="sidebar-link {% if 'enquiries' in request.path %}active{% endif %}">
+              💬 Custom Enquiries
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'dashboard:payments' %}" class="sidebar-link {% if 'payments' in request.path %}active{% endif %}">
+              💳 Payment Records
+            </a>
+          </li>
+        {% endif %}
+
+        {% if request.user.is_content_manager or request.user.is_admin_owner %}
+          <li>
+            <a href="{% url 'dashboard:packages' %}" class="sidebar-link {% if 'packages' in request.path %}active{% endif %}">
+              📦 Holiday Packages CMS
+            </a>
+          </li>
+        {% endif %}
+
+        {% if request.user.is_admin_owner %}
+          <li style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <span style="font-size: 0.75rem; color: var(--color-gold); font-weight: 700; text-transform: uppercase; padding-left: 1rem;">System Administration</span>
+          </li>
+          <li>
+            <a href="{% url 'dashboard:users' %}" class="sidebar-link {% if 'users' in request.path %}active{% endif %}">
+              👥 Users & Roles
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'dashboard:settings' %}" class="sidebar-link {% if 'settings' in request.path %}active{% endif %}">
+              ⚙️ Site Configuration
+            </a>
+          </li>
+        {% endif %}
+
+        <li style="margin-top: 2rem;">
+          <a href="{% url 'core:home' %}" class="sidebar-link" style="color: var(--color-gold);">
+            🌐 View Public Website
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'accounts:logout' %}" class="sidebar-link" style="color: var(--color-danger);">
+            🚪 Logout
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+      {% if messages %}
+        <div style="margin-bottom: 1.5rem;">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block dashboard_content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

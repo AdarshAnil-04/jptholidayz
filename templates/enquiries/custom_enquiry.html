@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Plan a Custom Travel Experience | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div style="background: var(--color-navy); color: #FFFFFF; padding: 4rem 0 3rem 0; text-align: center;">
+  <div class="container">
+    <h1 style="color: #FFFFFF; font-size: 2.75rem;">Plan Your Custom Holiday</h1>
+    <p style="color: var(--color-slate-300); font-size: 1.1rem; max-width: 650px; margin: 0.75rem auto 0 auto;">
+      Have a unique destination in mind? Fill in your travel desires and our travel design team will build a bespoke itinerary tailored to your budget.
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding: 4rem 0;">
+  <div style="max-width: 680px; margin: 0 auto; background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-md);">
+    
+    <form method="post" action="{% url 'enquiries:custom' %}">
+      {% csrf_token %}
+      
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-slate-200);">
+        1. Contact Information
+      </h3>
+
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        {{ form.name }}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          {{ form.email }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          {{ form.phone }}
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-slate-200);">
+        2. Destination & Travel Parameters
+      </h3>
+
+      <div class="form-group">
+        <label class="form-label">Destination Preference *</label>
+        {{ form.destination_preference }}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Preferred Date</label>
+          {{ form.preferred_date }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration (Days)</label>
+          {{ form.duration_days }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">No. Travelers</label>
+          {{ form.travelers_count }}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Estimated Budget Range</label>
+          {{ form.budget_range }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Travel Style / Preferences</label>
+          {{ form.preferences }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tell Us About Your Dream Vacation *</label>
+        {{ form.message }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; margin-top: 1.5rem;">
+        ✨ Submit Custom Travel Request
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <div>
+    <h1 style="font-size: 2rem;">Payment Records Accounting</h1>
+    <p style="color: var(--color-slate-600);">Verify customer payment receipts, wire transfers, and update verification statuses.</p>
+  </div>
+</div>
+
+<div style="background: #FFFFFF; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); overflow: hidden;">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+      <thead>
+        <tr style="background: var(--color-slate-100); color: var(--color-navy); border-bottom: 2px solid var(--color-slate-200);">
+          <th style="padding: 1rem 1.25rem;">Payment Reference</th>
+          <th style="padding: 1rem 1.25rem;">Booking Code</th>
+          <th style="padding: 1rem 1.25rem;">Amount</th>
+          <th style="padding: 1rem 1.25rem;">Method</th>
+          <th style="padding: 1rem 1.25rem;">Status</th>
+          <th style="padding: 1rem 1.25rem;">Verified By</th>
+          <th style="padding: 1rem 1.25rem; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in payments %}
+          <tr style="border-bottom: 1px solid var(--color-slate-200);">
+            <td style="padding: 1rem 1.25rem; font-weight: 700; color: var(--color-navy);">
+              {{ p.payment_reference }}
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <a href="{% url 'dashboard:booking_detail' reference_code=p.booking.reference_code %}" style="font-weight: 600;">
+                {{ p.booking.reference_code }}
+              </a> ({{ p.booking.guest_name }})
+            </td>
+            <td style="padding: 1rem 1.25rem; font-weight: 700; color: var(--color-gold);">
+              ${{ p.amount|floatformat:2 }}
+            </td>
+            <td style="padding: 1rem 1.25rem; font-size: 0.9rem;">
+              {{ p.get_payment_method_display }}
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <span class="status-badge status-{{ p.payment_status|lower }}">{{ p.get_payment_status_display }}</span>
+            </td>
+            <td style="padding: 1rem 1.25rem; font-size: 0.85rem; color: var(--color-slate-600);">
+              {% if p.verified_by %}
+                {{ p.verified_by.get_full_name|default:p.verified_by.username }}
+              {% else %}
+                Pending
+              {% endif %}
+            </td>
+            <td style="padding: 1rem 1.25rem; text-align: right;">
+              <form method="post" style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                {% csrf_token %}
+                <input type="hidden" name="payment_id" value="{{ p.id }}">
+                <select name="payment_status" class="form-input" style="padding: 0.3rem 0.5rem; font-size: 0.85rem; width: 130px;">
+                  <option value="PENDING" {% if p.payment_status == 'PENDING' %}selected{% endif %}>Pending</option>
+                  <option value="VERIFIED" {% if p.payment_status == 'VERIFIED' %}selected{% endif %}>Verified</option>
+                  <option value="FAILED" {% if p.payment_status == 'FAILED' %}selected{% endif %}>Failed</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" style="padding: 3rem; text-align: center; color: var(--color-slate-600);">
+              No payment records submitted yet.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

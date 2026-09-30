@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Submit Booking Request for {{ package.title }} | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div style="background: var(--color-navy); color: #FFFFFF; padding: 3.5rem 0; text-align: center;">
+  <div class="container">
+    <span class="badge-tag" style="position: static; display: inline-block; background: var(--color-gold); margin-bottom: 0.5rem;">
+      Step 1 of 2: Booking Request Submission
+    </span>
+    <h1 style="color: #FFFFFF; font-size: 2.5rem;">Booking Request: {{ package.title }}</h1>
+    <p style="color: var(--color-slate-300); font-size: 1.05rem; margin-top: 0.5rem;">
+      Destination: <strong>{{ package.destination.name }}</strong> | Starting at <strong>${{ package.price_per_person|floatformat:2 }}</strong> / person
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding: 4rem 0;">
+  <div style="max-width: 680px; margin: 0 auto; background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-md);">
+    
+    <!-- Important Business Rule Disclaimer -->
+    <div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 1.25rem; border-radius: var(--radius-lg); margin-bottom: 2rem; display: flex; gap: 1rem; align-items: flex-start;">
+      <span style="font-size: 1.5rem;">ℹ️</span>
+      <div>
+        <h4 style="color: #92400E; margin-bottom: 0.3rem;">Important Booking Notice</h4>
+        <p style="font-size: 0.875rem; color: #78350F; line-height: 1.5;">
+          Submitting this form creates a <strong>Booking Request</strong>. It is not an automated or instant reservation confirmation. Our travel desk will verify room and tour availability for your dates before issuing a quote and confirmation voucher.
+        </p>
+      </div>
+    </div>
+
+    <form method="post" action="{% url 'bookings:create' package_slug=package.slug %}">
+      {% csrf_token %}
+      
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-slate-200);">
+        1. Lead Passenger Details
+      </h3>
+
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        {{ form.guest_name }}
+        {% if form.guest_name.errors %}<div style="color: var(--color-danger); font-size: 0.85rem;">{{ form.guest_name.errors.0 }}</div>{% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          {{ form.guest_email }}
+          {% if form.guest_email.errors %}<div style="color: var(--color-danger); font-size: 0.85rem;">{{ form.guest_email.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          {{ form.guest_phone }}
+          {% if form.guest_phone.errors %}<div style="color: var(--color-danger); font-size: 0.85rem;">{{ form.guest_phone.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-slate-200);">
+        2. Travel Dates & Traveler Count
+      </h3>
+
+      <div class="form-group">
+        <label class="form-label">Preferred Departure Date *</label>
+        {{ form.travel_date }}
+        {% if form.travel_date.errors %}<div style="color: var(--color-danger); font-size: 0.85rem;">{{ form.travel_date.errors.0 }}</div>{% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Number of Adults (12+ yrs)</label>
+          {{ form.adults_count }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of Children (Under 12 yrs)</label>
+          {{ form.children_count }}
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-slate-200);">
+        3. Pickup & Special Preferences
+      </h3>
+
+      <div class="form-group">
+        <label class="form-label">Hotel / Pickup Point Location</label>
+        {{ form.pickup_location }}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Special Requests or Dietary Requirements</label>
+        {{ form.special_requests }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; margin-top: 1.5rem;">
+        Submit Booking Request
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

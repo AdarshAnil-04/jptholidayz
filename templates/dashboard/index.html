@@ -1,0 +1,97 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <div>
+    <h1 style="font-size: 2rem;">Operations Dashboard Overview</h1>
+    <p style="color: var(--color-slate-600);">Real-time metrics for JPT Holidays bookings, packages, and custom trip requests.</p>
+  </div>
+  {% if request.user.is_content_manager or request.user.is_admin_owner %}
+    <a href="{% url 'dashboard:package_create' %}" class="btn btn-primary">+ Create New Package</a>
+  {% endif %}
+</div>
+
+<!-- Stats Counter Grid -->
+<div class="grid-4" style="margin-bottom: 3rem;">
+  <div class="stat-card">
+    <span style="font-size: 0.85rem; color: var(--color-slate-600); font-weight: 600; text-transform: uppercase;">Pending Review</span>
+    <div class="stat-number" style="color: var(--color-warning);">{{ pending_bookings }}</div>
+    <span style="font-size: 0.8rem; color: var(--color-slate-600);">Requires staff action</span>
+  </div>
+
+  <div class="stat-card">
+    <span style="font-size: 0.85rem; color: var(--color-slate-600); font-weight: 600; text-transform: uppercase;">Confirmed Bookings</span>
+    <div class="stat-number" style="color: var(--color-success);">{{ confirmed_bookings }}</div>
+    <span style="font-size: 0.8rem; color: var(--color-slate-600);">Verified itineraries</span>
+  </div>
+
+  <div class="stat-card">
+    <span style="font-size: 0.85rem; color: var(--color-slate-600); font-weight: 600; text-transform: uppercase;">New Custom Enquiries</span>
+    <div class="stat-number" style="color: var(--color-info);">{{ new_enquiries }}</div>
+    <span style="font-size: 0.8rem; color: var(--color-slate-600);">Awaiting response</span>
+  </div>
+
+  <div class="stat-card">
+    <span style="font-size: 0.85rem; color: var(--color-slate-600); font-weight: 600; text-transform: uppercase;">Verified Payments</span>
+    <div class="stat-number" style="color: var(--color-gold);">${{ total_revenue|floatformat:2 }}</div>
+    <span style="font-size: 0.8rem; color: var(--color-slate-600);">Total receipts logged</span>
+  </div>
+</div>
+
+<!-- Recent Tables Grid -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+  <!-- Recent Bookings Panel -->
+  <div style="background: #FFFFFF; padding: 1.75rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <h3 style="font-size: 1.25rem;">Recent Booking Requests</h3>
+      <a href="{% url 'dashboard:bookings' %}" style="font-size: 0.85rem; font-weight: 600;">View All →</a>
+    </div>
+
+    {% if recent_bookings %}
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        {% for b in recent_bookings %}
+          <div style="padding: 0.85rem; background: var(--color-slate-50); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>{{ b.reference_code }}</strong> — {{ b.guest_name }}<br>
+              <span style="font-size: 0.85rem; color: var(--color-slate-600);">Package: {{ b.package.title }}</span>
+            </div>
+            <div>
+              <span class="status-badge status-{{ b.status|lower }}">{{ b.get_status_display }}</span>
+              <a href="{% url 'dashboard:booking_detail' reference_code=b.reference_code %}" class="btn btn-outline btn-sm" style="margin-left: 0.5rem;">Manage</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--color-slate-600);">No recent bookings.</p>
+    {% endif %}
+  </div>
+
+  <!-- Recent Custom Enquiries Panel -->
+  <div style="background: #FFFFFF; padding: 1.75rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <h3 style="font-size: 1.25rem;">Recent Custom Enquiries</h3>
+      <a href="{% url 'dashboard:enquiries' %}" style="font-size: 0.85rem; font-weight: 600;">View All →</a>
+    </div>
+
+    {% if recent_enquiries %}
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        {% for e in recent_enquiries %}
+          <div style="padding: 0.85rem; background: var(--color-slate-50); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>{{ e.name }}</strong> ({{ e.destination_preference }})<br>
+              <span style="font-size: 0.85rem; color: var(--color-slate-600);">Travelers: {{ e.travelers_count }} | Budget: {{ e.budget_range|default:"N/A" }}</span>
+            </div>
+            <div>
+              <span class="status-badge status-pending">{{ e.get_status_display }}</span>
+              <a href="{% url 'dashboard:enquiry_detail' pk=e.pk %}" class="btn btn-outline btn-sm" style="margin-left: 0.5rem;">View</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--color-slate-600);">No custom enquiries received.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

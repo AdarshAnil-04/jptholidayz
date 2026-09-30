@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Create Account | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 0;">
+  <div style="max-width: 520px; margin: 0 auto; background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-md);">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span style="font-size: 2.5rem;">✈️</span>
+      <h1 style="font-size: 1.75rem; margin-top: 0.5rem;">Register Account</h1>
+      <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-top: 0.25rem;">Create a JPT Holidays customer account to track bookings and itineraries</p>
+    </div>
+
+    <form method="post" action="{% url 'accounts:register' %}">
+      {% csrf_token %}
+      
+      {% for field in form %}
+        <div class="form-group">
+          <label class="form-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div style="color: var(--color-danger); font-size: 0.85rem; margin-top: 0.25rem;">
+              {{ field.errors.0 }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; margin-top: 1rem;">
+        Register Customer Account
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--color-slate-200); font-size: 0.9rem;">
+      Already have an account? <a href="{% url 'accounts:login' %}" style="font-weight: 600; color: var(--color-gold);">Sign In</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

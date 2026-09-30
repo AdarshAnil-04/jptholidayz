@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Travel Photo Gallery | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div style="background: var(--color-navy); color: #FFFFFF; padding: 4rem 0 3rem 0; text-align: center;">
+  <div class="container">
+    <h1 style="color: #FFFFFF; font-size: 2.75rem;">Travel Photo Gallery</h1>
+    <p style="color: var(--color-slate-300); font-size: 1.1rem; max-width: 650px; margin: 0.75rem auto 0 auto;">
+      Immerse yourself in breathtaking imagery from our featured travel destinations and curated tour packages.
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding: 3.5rem 0;">
+  <!-- Category Filter Tabs -->
+  {% if categories %}
+    <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+      <a href="{% url 'gallery:index' %}" class="btn {% if not category_slug %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+        All Photos
+      </a>
+      {% for cat in categories %}
+        <a href="{% url 'gallery:index' %}?category={{ cat.slug }}" class="btn {% if category_slug == cat.slug %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+          {{ cat.name }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if images %}
+    <div class="grid-4">
+      {% for img in images %}
+        <div class="card" style="border: none;">
+          <div class="card-img-wrapper" style="height: 220px; border-radius: var(--radius-xl);">
+            <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:img.title }}">
+            {% if img.category %}
+              <span class="badge-tag">{{ img.category.name }}</span>
+            {% endif %}
+          </div>
+          <div style="padding: 0.75rem 0.25rem;">
+            <h4 style="font-size: 1rem; color: var(--color-navy);">{{ img.title }}</h4>
+            {% if img.caption %}
+              <p style="font-size: 0.85rem; color: var(--color-slate-600);">{{ img.caption }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--color-slate-300);">
+      <h3>No gallery images published yet</h3>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

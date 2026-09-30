@@ -1,0 +1,63 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div style="max-width: 750px; margin: 0 auto;">
+  <div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem;">Site Configuration & Brand Settings</h1>
+    <p style="color: var(--color-slate-600);">Configure agency contact info, currency, phone numbers, and default placeholders.</p>
+  </div>
+
+  <div style="background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-sm);">
+    <form method="post" action="{% url 'dashboard:settings' %}">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label class="form-label">Agency Brand Name</label>
+        <input type="text" name="site_name" value="{{ settings.site_name }}" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Brand Tagline</label>
+        <input type="text" name="tagline" value="{{ settings.tagline }}" class="form-input" required>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">Contact Email</label>
+          <input type="email" name="contact_email" value="{{ settings.contact_email }}" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contact Phone</label>
+          <input type="text" name="contact_phone" value="{{ settings.contact_phone }}" class="form-input" required>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">WhatsApp Support Number</label>
+          <input type="text" name="whatsapp_number" value="{{ settings.whatsapp_number }}" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency Symbol / Code</label>
+          <input type="text" name="currency_symbol" value="{{ settings.currency_symbol }}" class="form-input" style="width: 80px; display: inline-block;">
+          <input type="text" name="currency_code" value="{{ settings.currency_code }}" class="form-input" style="width: 120px; display: inline-block;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Physical Office Address</label>
+        <textarea name="office_address" class="form-input" rows="2">{{ settings.office_address }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">About Agency Narrative</label>
+        <textarea name="about_text" class="form-input" rows="4">{{ settings.about_text }}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem;">
+        Save Site Settings
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

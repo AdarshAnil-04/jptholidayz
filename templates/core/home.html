@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero bg-airplane-watermark">
+  <div class="container hero-content">
+    <span class="badge-pill badge-pill-dark" style="margin-bottom: 1.25rem;">
+      <svg width="14" height="14" viewBox="0 0 100 100" fill="none"><path d="M 10,50 L 90,10 L 60,90 L 45,55 Z" fill="#8BB8C7"/></svg>
+      BESPOKE LUXURY HOLIDAYS &amp; EXPERIENCES
+    </span>
+    <h1>Discover Extraordinary World Holidays With JPT Holidays</h1>
+    <p>From tropical island getaways to alpine adventures, experience seamless travel planning, luxury stays, and curated itineraries.</p>
+
+    <!-- Quick Search Widget -->
+    <div style="background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 1.75rem; border-radius: var(--radius-xl); color: var(--color-navy); margin-top: 2rem; box-shadow: var(--shadow-xl); border: 1px solid rgba(139, 184, 199, 0.3);">
+      <form action="{% url 'core:search' %}" method="get" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+        <div style="flex: 1; min-width: 200px;" class="form-group" style="margin: 0;">
+          <label class="form-label" style="text-align: left;">Search Keyword / Destination</label>
+          <input type="text" name="q" class="form-input" placeholder="e.g. Bali, Paris, Safari...">
+        </div>
+        <div style="width: 200px;" class="form-group">
+          <label class="form-label" style="text-align: left;">Destination</label>
+          <select name="destination" class="form-input">
+            <option value="">All Destinations</option>
+            {% for dest in featured_destinations %}
+              <option value="{{ dest.id }}">{{ dest.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div style="width: 180px;" class="form-group">
+          <label class="form-label" style="text-align: left;">Max Budget ($)</label>
+          <input type="number" name="max_price" class="form-input" placeholder="e.g. 2500">
+        </div>
+        <button type="submit" class="btn btn-primary" style="height: 46px; margin-bottom: 1.25rem;">
+          ✈️ Find Packages
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Travel Packages Section -->
+<section class="container" style="padding: 5rem 0;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <span class="badge-pill" style="margin-bottom: 0.5rem;">Curated Collections</span>
+      <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Featured Holiday Packages</h2>
+    </div>
+    <a href="{% url 'packages:list' %}" class="btn btn-outline-plum" style="color: var(--color-plum); border-color: var(--color-plum);">View All Packages →</a>
+  </div>
+
+  {% if featured_packages %}
+    <div class="grid-3">
+      {% for pkg in featured_packages %}
+        <div class="card">
+          <div class="card-img-wrapper">
+            {% if pkg.cover_image %}
+              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}">
+            {% endif %}
+            <span class="badge-tag">📍 {{ pkg.destination.name }}</span>
+            <span class="price-tag">${{ pkg.price_per_person|floatformat:0 }} <small style="font-size: 0.75rem; font-weight: 400;">/ person</small></span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{ pkg.title }}</h3>
+            <p class="card-subtitle">⏱️ {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights</p>
+            <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem; line-height: 1.5;">
+              {{ pkg.overview|truncatewords:20 }}
+            </p>
+            <div style="display: flex; gap: 0.75rem;">
+              <a href="{{ pkg.get_absolute_url }}" class="btn btn-outline btn-sm" style="flex: 1;">View Details</a>
+              <a href="{% url 'bookings:create' package_slug=pkg.slug %}" class="btn btn-primary btn-sm" style="flex: 1;">Book Request</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-lg); border: 1px dashed var(--color-slate-300);">
+      <p style="font-size: 1.1rem; color: var(--color-slate-600);">No travel packages published yet. Please check back shortly!</p>
+    </div>
+  {% endif %}
+</section>
+
+<!-- Popular Destinations Section -->
+<section style="background-color: var(--color-plum-subtle); padding: 5rem 0;">
+  <div class="container">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 3rem auto;">
+      <span class="badge-pill" style="margin-bottom: 0.5rem;">Worldwide Escapes</span>
+      <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Popular Destinations</h2>
+      <p style="color: var(--color-slate-600);">Handpicked iconic destinations around the world tailored for leisure, honeymooners, and family vacations.</p>
+    </div>
+
+    {% if featured_destinations %}
+      <div class="grid-3">
+        {% for dest in featured_destinations %}
+          <div class="card">
+            <div class="card-img-wrapper" style="height: 250px;">
+              {% if dest.cover_image %}
+                <img src="{{ dest.cover_image.url }}" alt="{{ dest.name }}">
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="{{ dest.name }}">
+              {% endif %}
+              <span class="badge-tag" style="background: rgba(115, 46, 78, 0.85);">📍 {{ dest.country }}</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">{{ dest.name }}</h3>
+              <p style="font-size: 0.875rem; color: var(--color-plum); font-weight: 700; margin-bottom: 0.5rem;">
+                ✈️ {{ dest.package_count }} Package{{ dest.package_count|pluralize }} Available
+              </p>
+              <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">
+                {{ dest.tagline|default:dest.description|truncatewords:18 }}
+              </p>
+              <a href="{{ dest.get_absolute_url }}" class="btn btn-outline btn-sm" style="width: 100%; border-color: var(--color-plum); color: var(--color-plum);">Explore {{ dest.name }}</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="text-align: center; color: var(--color-slate-600);">No featured destinations available right now.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Custom Travel Banner -->
+<section style="background: linear-gradient(135deg, var(--color-plum-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 4.5rem 0; margin: 4rem 0; position: relative; overflow: hidden;">
+  <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; position: relative; z-index: 2;">
+    <div style="max-width: 650px;">
+      <span class="badge-pill badge-pill-dark" style="margin-bottom: 0.75rem;">Bespoke Travel Engineering</span>
+      <h2 style="color: #FFFFFF; font-size: 2.25rem; margin-top: 0.4rem;">Looking for a Customized Holiday Plan?</h2>
+      <p style="color: var(--color-slate-300); font-size: 1.1rem; margin-top: 0.75rem;">
+        Tell our travel specialists your preferred travel dates, group size, and budget, and we will craft a personalized itinerary just for you.
+      </p>
+    </div>
+    <a href="{% url 'enquiries:custom' %}" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.05rem;">
+      ✈️ Plan Custom Trip Now
+    </a>
+  </div>
+</section>
+
+<!-- Why Choose JPT Holidays -->
+<section class="container" style="padding: 4rem 0;">
+  <div style="text-align: center; margin-bottom: 3.5rem;">
+    <span style="color: var(--color-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">The JPT Difference</span>
+    <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Why Book With JPT Holidays?</h2>
+  </div>
+
+  <div class="grid-4">
+    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Trusted Travel Desk</h3>
+      <p style="font-size: 0.875rem; color: var(--color-slate-600);">Professional travel consultants reviewing every booking request for maximum peace of mind.</p>
+    </div>
+    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">💎</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Transparent Pricing</h3>
+      <p style="font-size: 0.875rem; color: var(--color-slate-600);">No hidden fees or unexpected surcharges. Clear inclusions and financial statements.</p>
+    </div>
+    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📋</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Branded PDF Itineraries</h3>
+      <p style="font-size: 0.875rem; color: var(--color-slate-600);">Instant downloadable PDF travel vouchers with day-by-day activity timelines.</p>
+    </div>
+    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📞</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Dedicated Support</h3>
+      <p style="font-size: 0.875rem; color: var(--color-slate-600);">24/7 travel desk support during your trip via WhatsApp and phone assistance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Sample Testimonials Section (Labeled as Sample Content) -->
+<section style="background-color: var(--color-slate-100); padding: 5rem 0;">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <span style="color: var(--color-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Traveler Experiences</span>
+      <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">What Our Travelers Say</h2>
+      <p style="font-size: 0.8rem; color: var(--color-slate-600); margin-top: 0.3rem;">[Sample Traveler Testimonials]</p>
+    </div>
+
+    <div class="grid-3">
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
+        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
+          "JPT Holidays arranged our family trip to Bali effortlessly. The day-by-day itinerary PDF made coordination so simple. Highly recommended!"
+        </p>
+        <strong>- Marcus V. [Sample Reviewer]</strong>
+      </div>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
+        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
+          "The custom travel enquiry team responded within hours and tailored our Swiss Alps honeymoon within our exact budget range."
+        </p>
+        <strong>- Sophia & Liam [Sample Reviewer]</strong>
+      </div>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
+        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
+          "Clear payment tracking and instant updates on our booking reference. Very professional travel agency platform!"
+        </p>
+        <strong>- David K. [Sample Reviewer]</strong>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

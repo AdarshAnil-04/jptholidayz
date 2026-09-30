@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&amp;display=swap');
+      .logo-jpt {
+        font-family: 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+        font-size: 154px;
+        font-weight: 900;
+        fill: #732E4E;
+        letter-spacing: -4px;
+      }
+      .logo-holidays {
+        font-family: 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+        font-size: 34px;
+        font-weight: 800;
+        fill: #732E4E;
+        letter-spacing: 14px;
+      }
+      .plane-color {
+        fill: #91B8C4;
+      }
+      .pill-border {
+        stroke: #91B8C4;
+        stroke-width: 4.5;
+        fill: none;
+        rx: 26px;
+        ry: 26px;
+      }
+    </style>
+
+    <!-- Custom Clip path for the J angled bottom-left notch -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Group for Logo Alignment -->
+  <g transform="translate(10, 10)">
+    
+    <!-- Airplane Backdrop Graphic (Flying diagonally up-right through JPT) -->
+    <g transform="translate(245, 105) rotate(-31)">
+      <!-- Fuselage -->
+      <path class="plane-color" d="M -210,0 C -100,-12 110,-12 210,0 C 170,16 80,18 -210,0 Z" opacity="0.9" />
+      <!-- Main Upper Wing -->
+      <path class="plane-color" d="M 10,-8 L 50,-135 L 105,-135 L 55,-8 Z" opacity="0.95" />
+      <!-- Lower Wing -->
+      <path class="plane-color" d="M -15,8 L -55,85 L -10,85 L 25,8 Z" opacity="0.85" />
+      <!-- Tail Wing -->
+      <path class="plane-color" d="M -160,-3 L -205,-55 L -175,-55 L -138,-3 Z" opacity="0.9" />
+    </g>
+
+    <!-- JPT Big Bold Monogram -->
+    <!-- J letter with stylized diagonal cut at bottom left -->
+    <g>
+      <!-- Cutout J shape -->
+      <path fill="#732E4E" d="
+        M 105,40 
+        L 162,40 
+        L 162,175 
+        C 162,205 138,222 96,222 
+        C 52,222 28,200 28,168 
+        L 28,142 
+        L 95,78 
+        L 95,168 
+        C 95,176 100,181 108,181 
+        C 114,181 120,176 120,168 
+        L 120,95 
+        L 105,95 
+        Z" />
+      
+      <!-- P Letter -->
+      <path fill="#732E4E" d="
+        M 175,40 
+        L 270,40 
+        C 312,40 336,60 336,94 
+        C 336,128 312,148 270,148 
+        L 218,148 
+        L 218,220 
+        L 175,220 
+        Z 
+        M 218,80 
+        L 218,108 
+        L 265,108 
+        C 283,108 293,100 293,94 
+        C 293,88 283,80 265,80 
+        Z" />
+
+      <!-- T Letter -->
+      <path fill="#732E4E" d="
+        M 326,40 
+        L 472,40 
+        L 472,80 
+        L 420,80 
+        L 420,220 
+        L 377,220 
+        L 377,80 
+        L 326,80 
+        Z" />
+    </g>
+
+    <!-- Bottom Pill Container for HOLIDAYS -->
+    <g transform="translate(32, 218)">
+      <rect x="0" y="0" width="436" height="48" class="pill-border" />
+      <text x="228" y="34" class="logo-holidays" text-anchor="middle">HOLIDAYS</text>
+    </g>
+
+  </g>
+</svg>

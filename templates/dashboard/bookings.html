@@ -1,0 +1,86 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <div>
+    <h1 style="font-size: 2rem;">Booking Requests Management</h1>
+    <p style="color: var(--color-slate-600);">Filter, review, quote, and transition booking request statuses.</p>
+  </div>
+</div>
+
+<!-- Filters Bar -->
+<div style="background: #FFFFFF; padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid var(--color-slate-200); margin-bottom: 2rem;">
+  <form method="get" action="{% url 'dashboard:bookings' %}" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <input type="text" name="q" value="{{ query }}" class="form-input" style="flex: 1; min-width: 240px;" placeholder="Search ref code, guest name or email...">
+    
+    <select name="status" class="form-input" style="width: 200px;">
+      <option value="">All Statuses</option>
+      {% for val, label in status_choices %}
+        <option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+  </form>
+</div>
+
+<!-- Bookings Table -->
+<div style="background: #FFFFFF; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); overflow: hidden;">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+      <thead>
+        <tr style="background: var(--color-slate-100); color: var(--color-navy); border-bottom: 2px solid var(--color-slate-200);">
+          <th style="padding: 1rem 1.25rem;">Reference</th>
+          <th style="padding: 1rem 1.25rem;">Lead Passenger</th>
+          <th style="padding: 1rem 1.25rem;">Package & Date</th>
+          <th style="padding: 1rem 1.25rem;">Quoted Total</th>
+          <th style="padding: 1rem 1.25rem;">Status</th>
+          <th style="padding: 1rem 1.25rem;">Assigned Staff</th>
+          <th style="padding: 1rem 1.25rem; text-align: right;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+          <tr style="border-bottom: 1px solid var(--color-slate-200);">
+            <td style="padding: 1rem 1.25rem; font-weight: 700; color: var(--color-navy);">
+              {{ b.reference_code }}
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <strong>{{ b.guest_name }}</strong><br>
+              <span style="font-size: 0.85rem; color: var(--color-slate-600);">{{ b.guest_email }}</span>
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              {{ b.package.title }}<br>
+              <span style="font-size: 0.85rem; color: var(--color-gold);">📅 {{ b.travel_date|date:"M d, Y" }}</span>
+            </td>
+            <td style="padding: 1rem 1.25rem; font-weight: 700;">
+              ${{ b.total_quoted_price|floatformat:2 }}
+            </td>
+            <td style="padding: 1rem 1.25rem;">
+              <span class="status-badge status-{{ b.status|lower }}">{{ b.get_status_display }}</span>
+            </td>
+            <td style="padding: 1rem 1.25rem; font-size: 0.9rem;">
+              {% if b.assigned_staff %}
+                {{ b.assigned_staff.get_full_name|default:b.assigned_staff.username }}
+              {% else %}
+                Unassigned
+              {% endif %}
+            </td>
+            <td style="padding: 1rem 1.25rem; text-align: right;">
+              <a href="{% url 'dashboard:booking_detail' reference_code=b.reference_code %}" class="btn btn-outline btn-sm">
+                Manage Booking
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" style="padding: 3rem; text-align: center; color: var(--color-slate-600);">
+              No booking requests found matching filters.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

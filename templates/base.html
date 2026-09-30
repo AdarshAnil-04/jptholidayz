@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site_settings.site_name }} | {{ site_settings.tagline }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Explore luxury travel packages, curated holiday itineraries, and bespoke tours with JPT Holidays.{% endblock %}">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{% url 'core:home' %}" class="brand-logo-link" title="JPT Holidays - Home">
+        <img src="{% static 'images/logo-white.svg' %}" alt="JPT Holidays Logo" class="brand-logo-img">
+      </a>
+
+      <button class="mobile-nav-toggle" aria-label="Toggle Navigation">☰</button>
+
+      <ul class="nav-menu">
+        <li><a href="{% url 'core:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+        <li><a href="{% url 'destinations:list' %}" class="nav-link {% if 'destinations' in request.path %}active{% endif %}">Destinations</a></li>
+        <li><a href="{% url 'packages:list' %}" class="nav-link {% if 'packages' in request.path %}active{% endif %}">Packages</a></li>
+        <li><a href="{% url 'enquiries:custom' %}" class="nav-link {% if 'enquiries' in request.path %}active{% endif %}">Custom Trip</a></li>
+        <li><a href="{% url 'gallery:index' %}" class="nav-link {% if 'gallery' in request.path %}active{% endif %}">Gallery</a></li>
+        <li><a href="{% url 'core:about' %}" class="nav-link {% if 'about' in request.path %}active{% endif %}">About</a></li>
+        <li><a href="{% url 'core:contact' %}" class="nav-link {% if 'contact' in request.path %}active{% endif %}">Contact</a></li>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user.is_booking_staff or request.user.is_content_manager or request.user.is_admin_owner %}
+            <li><a href="{% url 'dashboard:index' %}" class="btn btn-outline-plum btn-sm">🛡️ Operations Desk</a></li>
+          {% else %}
+            <li><a href="{% url 'bookings:my_bookings' %}" class="nav-link {% if 'my-bookings' in request.path %}active{% endif %}">My Bookings</a></li>
+          {% endif %}
+          <li><a href="{% url 'accounts:profile' %}" class="btn btn-secondary btn-sm">👤 {{ request.user.first_name|default:request.user.username }}</a></li>
+          <li><a href="{% url 'accounts:logout' %}" class="btn btn-outline btn-sm">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'accounts:login' %}" class="btn btn-outline btn-sm">Sign In</a></li>
+          <li><a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </header>
+
+  <!-- Notification Flash Messages -->
+  {% if messages %}
+    <div class="container" style="margin-top: 1.5rem;">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          <span>{{ message }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Main Content Block -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="{% url 'core:home' %}" class="footer-logo-link" style="margin-bottom: 1.25rem; display: inline-block;">
+            <img src="{% static 'images/logo-white.svg' %}" alt="JPT Holidays Logo" style="height: 48px; width: auto;">
+          </a>
+          <p>{{ site_settings.tagline }}</p>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--color-slate-300);">
+            📍 {{ site_settings.office_address }}
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="{% url 'destinations:list' %}">Featured Destinations</a></li>
+            <li><a href="{% url 'packages:list' %}">Holiday Packages</a></li>
+            <li><a href="{% url 'enquiries:custom' %}">Custom Travel Enquiry</a></li>
+            <li><a href="{% url 'gallery:index' %}">Travel Gallery</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="{% url 'core:about' %}">About JPT Holidays</a></li>
+            <li><a href="{% url 'core:contact' %}">Contact Travel Desk</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'bookings:my_bookings' %}">Track My Booking</a></li>
+            {% else %}
+              <li><a href="{% url 'accounts:login' %}">Customer Portal Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Direct Contact</h4>
+          <p style="margin-bottom: 0.4rem;"><strong>Phone:</strong> {{ site_settings.contact_phone }}</p>
+          <p style="margin-bottom: 0.4rem;"><strong>WhatsApp:</strong> {{ site_settings.whatsapp_number }}</p>
+          <p style="margin-bottom: 0.4rem;"><strong>Email:</strong> {{ site_settings.contact_email }}</p>
+          <p style="font-size: 0.85rem; color: var(--color-gold);">🕒 {{ site_settings.business_hours }}</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} JPT Holidays. All rights reserved. Registered Travel Agency & Booking Management Platform.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

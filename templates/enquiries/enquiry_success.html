@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Enquiry Submitted | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 5rem 0;">
+  <div style="max-width: 580px; margin: 0 auto; background: #FFFFFF; padding: 3rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-lg); text-align: center;">
+    
+    <div style="width: 70px; height: 70px; background: #FEF3C7; color: var(--color-gold-hover); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-size: 2.25rem; margin: 0 auto 1.5rem auto;">
+      ✨
+    </div>
+
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Custom Travel Request Received!</h1>
+    <p style="color: var(--color-slate-600); font-size: 1.05rem; margin-bottom: 2rem;">
+      Thank you <strong>{{ enquiry.name }}</strong>! Our bespoke travel consultants will review your destination preference for <strong>{{ enquiry.destination_preference }}</strong> and prepare a customized itinerary quotation.
+    </p>
+
+    <a href="{% url 'core:home' %}" class="btn btn-primary" style="padding: 0.8rem 2rem;">Return to Homepage</a>
+  </div>
+</div>
+{% endblock %}
