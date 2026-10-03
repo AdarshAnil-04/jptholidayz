@@ -2,15 +2,17 @@
 {% block title %}Create Account | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div class="container" style="padding: 4rem 0;">
-  <div style="max-width: 520px; margin: 0 auto; background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-md);">
+<div class="container" style="padding: 5rem 1.5rem;">
+  <div style="max-width: 520px; margin: 0 auto; background: #FFFFFF; padding: 2.75rem 2.25rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-xl);" data-reveal>
     <div style="text-align: center; margin-bottom: 2rem;">
-      <span style="font-size: 2.5rem;">✈️</span>
-      <h1 style="font-size: 1.75rem; margin-top: 0.5rem;">Register Account</h1>
-      <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-top: 0.25rem;">Create a JPT Holidays customer account to track bookings and itineraries</p>
+      <div style="width: 56px; height: 56px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+      </div>
+      <h1 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--navy);">Register Account</h1>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">Create a JPT Holidays customer account to track bookings and itineraries</p>
     </div>
 
-    <form method="post" action="{% url 'accounts:register' %}">
+    <form method="post" action="{% url 'accounts:register' %}" data-loading-state>
       {% csrf_token %}
       
       {% for field in form %}
@@ -18,21 +20,22 @@
           <label class="form-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
           {{ field }}
           {% if field.errors %}
-            <div style="color: var(--color-danger); font-size: 0.85rem; margin-top: 0.25rem;">
+            <div class="form-error">
               {{ field.errors.0 }}
             </div>
           {% endif %}
         </div>
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; margin-top: 1rem;">
+      <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top: 1.25rem;">
         Register Customer Account
       </button>
     </form>
 
-    <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--color-slate-200); font-size: 0.9rem;">
-      Already have an account? <a href="{% url 'accounts:login' %}" style="font-weight: 600; color: var(--color-gold);">Sign In</a>
+    <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--text-muted);">
+      Already have an account? <a href="{% url 'accounts:login' %}" style="font-weight: 600; color: var(--primary);">Sign In</a>
     </div>
   </div>
 </div>
 {% endblock %}
+

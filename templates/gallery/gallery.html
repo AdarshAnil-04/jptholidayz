@@ -29,15 +29,15 @@
   {% if images %}
     <div class="grid-4">
       {% for img in images %}
-        <div class="card" style="border: none;">
-          <div class="card-img-wrapper" style="height: 220px; border-radius: var(--radius-xl);">
+        <div class="card" style="border: none;" data-reveal>
+          <div class="card-img-wrapper" style="height: 220px; border-radius: var(--radius-xl); cursor: pointer;" data-lightbox-src="{{ img.image.url }}" data-caption="{{ img.title }}{% if img.caption %} — {{ img.caption }}{% endif %}">
             <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:img.title }}">
             {% if img.category %}
               <span class="badge-tag">{{ img.category.name }}</span>
             {% endif %}
           </div>
           <div style="padding: 0.75rem 0.25rem;">
-            <h4 style="font-size: 1rem; color: var(--color-navy);">{{ img.title }}</h4>
+            <h4 style="font-size: 1rem; color: var(--color-navy); margin-bottom: 0.25rem;">{{ img.title }}</h4>
             {% if img.caption %}
               <p style="font-size: 0.85rem; color: var(--color-slate-600);">{{ img.caption }}</p>
             {% endif %}

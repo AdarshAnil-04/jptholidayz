@@ -2,87 +2,91 @@
 {% block title %}Booking {{ booking.reference_code }} Details | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div style="background: var(--color-navy); color: #FFFFFF; padding: 3.5rem 0;">
-  <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+<div style="background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); color: #FFFFFF; padding: 4rem 0 3.5rem 0;">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;" data-reveal>
     <div>
-      <span class="status-badge status-{{ booking.status|lower }}" style="margin-bottom: 0.5rem;">
+      <span class="status-badge status-{{ booking.status|lower }}" style="margin-bottom: 0.75rem;">
         Status: {{ booking.get_status_display }}
       </span>
-      <h1 style="color: #FFFFFF; font-size: 2.25rem;">Booking Reference: {{ booking.reference_code }}</h1>
-      <p style="color: var(--color-slate-300);">Submitted on {{ booking.created_at|date:"F d, Y at H:i" }}</p>
+      <h1 style="color: #FFFFFF; margin-bottom: 0.35rem;">Booking Reference: {{ booking.reference_code }}</h1>
+      <p style="color: var(--border-dark); font-size: 0.95rem;">Submitted on {{ booking.created_at|date:"F d, Y at H:i" }}</p>
     </div>
 
-    <div>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
       {% if booking.status == 'CONFIRMED' or booking.status == 'COMPLETED' %}
         <a href="{% url 'reports:itinerary_pdf' reference_code=booking.reference_code %}" target="_blank" class="btn btn-primary">
-          📄 Download Branded Itinerary PDF
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download Branded Itinerary PDF
         </a>
       {% endif %}
       {% if booking.status == 'QUOTED' or booking.status == 'AWAITING_PAYMENT' %}
-        <a href="{% url 'payments:instructions' reference_code=booking.reference_code %}" class="btn btn-primary">
-          💳 Submit Payment Receipt
+        <a href="{% url 'payments:instructions' reference_code=booking.reference_code %}" class="btn btn-accent">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Submit Payment Receipt
         </a>
       {% endif %}
     </div>
   </div>
 </div>
 
-<div class="container" style="padding: 3rem 0;">
-  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
+<div class="container" style="padding: 4rem 1.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
     
     <div>
       <!-- Package Info Card -->
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); margin-bottom: 2rem;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Holiday Package Details</h2>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 2rem;" data-reveal>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem;">Holiday Package Details</h2>
         <div style="display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap;">
           {% if booking.package.cover_image %}
             <img src="{{ booking.package.cover_image.url }}" alt="{{ booking.package.title }}" style="width: 140px; height: 100px; object-fit: cover; border-radius: var(--radius-md);">
           {% endif %}
           <div>
             <h3 style="font-size: 1.25rem; margin-bottom: 0.3rem;">{{ booking.package.title }}</h3>
-            <p style="color: var(--color-slate-600); font-size: 0.95rem; margin-bottom: 0.5rem;">📍 {{ booking.package.destination.name }} ({{ booking.package.destination.country }})</p>
-            <p style="font-size: 0.9rem;"><strong>Duration:</strong> {{ booking.package.duration_days }} Days / {{ booking.package.duration_nights }} Nights</p>
-            <p style="font-size: 0.9rem;"><strong>Departure Date:</strong> {{ booking.travel_date|date:"F d, Y" }}</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+              <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {{ booking.package.destination.name }} ({{ booking.package.destination.country }})
+            </p>
+            <p style="font-size: 0.9rem; color: var(--text-main);"><strong>Duration:</strong> {{ booking.package.duration_days }} Days / {{ booking.package.duration_nights }} Nights</p>
+            <p style="font-size: 0.9rem; color: var(--text-main);"><strong>Departure Date:</strong> {{ booking.travel_date|date:"F d, Y" }}</p>
           </div>
         </div>
       </div>
 
       <!-- Financial Snapshot -->
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); margin-bottom: 2rem;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Financial Summary</h2>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
-          <div style="background: var(--color-slate-50); padding: 1rem; border-radius: var(--radius-md);">
-            <span style="font-size: 0.8rem; color: var(--color-slate-600); text-transform: uppercase;">Total Quoted</span>
-            <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-navy);">${{ booking.total_quoted_price|floatformat:2 }}</div>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 2rem;" data-reveal>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem;">Financial Summary</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; text-align: center;">
+          <div style="background: var(--surface-alt); padding: 1.25rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Total Quoted</span>
+            <div style="font-size: 1.6rem; font-weight: 800; color: var(--navy); font-family: var(--font-heading); margin-top: 0.2rem;">${{ booking.total_quoted_price|floatformat:2 }}</div>
           </div>
-          <div style="background: #ECFDF5; padding: 1rem; border-radius: var(--radius-md);">
-            <span style="font-size: 0.8rem; color: #065F46; text-transform: uppercase;">Amount Paid</span>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #047857;">${{ booking.amount_paid|floatformat:2 }}</div>
+          <div style="background: var(--success-bg); padding: 1.25rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.8rem; color: #065F46; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Amount Paid</span>
+            <div style="font-size: 1.6rem; font-weight: 800; color: #047857; font-family: var(--font-heading); margin-top: 0.2rem;">${{ booking.amount_paid|floatformat:2 }}</div>
           </div>
-          <div style="background: #FEF2F2; padding: 1rem; border-radius: var(--radius-md);">
-            <span style="font-size: 0.8rem; color: #991B1B; text-transform: uppercase;">Balance Remaining</span>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #991B1B;">${{ booking.amount_due|floatformat:2 }}</div>
+          <div style="background: var(--danger-bg); padding: 1.25rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.8rem; color: #991B1B; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Balance Due</span>
+            <div style="font-size: 1.6rem; font-weight: 800; color: #991B1B; font-family: var(--font-heading); margin-top: 0.2rem;">${{ booking.amount_due|floatformat:2 }}</div>
           </div>
         </div>
       </div>
 
       <!-- Status History Timeline -->
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-        <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem;">Booking Status Activity History</h2>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm);" data-reveal>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Booking Activity Timeline</h2>
         
         {% if history %}
-          <div style="border-left: 2px solid var(--color-slate-300); padding-left: 1.5rem; margin-left: 0.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="itinerary-timeline" style="margin-top: 0;">
             {% for item in history %}
-              <div style="position: relative;">
-                <div style="position: absolute; left: -1.95rem; top: 0.2rem; width: 12px; height: 12px; border-radius: var(--radius-full); background: var(--color-gold);"></div>
-                <p style="font-size: 0.85rem; color: var(--color-slate-600); font-weight: 600;">
+              <div class="itinerary-card" style="padding: 1.25rem;">
+                <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
                   {{ item.timestamp|date:"M d, Y H:i" }}
                 </p>
-                <p style="font-size: 1rem; font-weight: 700; color: var(--color-navy); margin: 0.2rem 0;">
+                <p style="font-size: 1rem; font-weight: 700; color: var(--navy); margin: 0.3rem 0;">
                   Transitioned to: <span class="status-badge status-{{ item.to_status|lower }}">{{ item.to_status }}</span>
                 </p>
                 {% if item.note %}
-                  <p style="font-size: 0.9rem; color: var(--color-slate-700); background: var(--color-slate-50); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-top: 0.4rem;">
+                  <p style="font-size: 0.9rem; color: var(--text-main); background: var(--surface-alt); padding: 0.6rem 0.85rem; border-radius: var(--radius-sm); margin-top: 0.5rem;">
                     Note: {{ item.note }}
                   </p>
                 {% endif %}
@@ -90,23 +94,23 @@
             {% endfor %}
           </div>
         {% else %}
-          <p style="color: var(--color-slate-600);">No history recorded yet.</p>
+          <p style="color: var(--text-muted);">No history recorded yet.</p>
         {% endif %}
       </div>
 
     </div>
 
     <!-- Right Column Sidebar -->
-    <div>
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-        <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Passenger Information</h3>
-        <p style="font-size: 0.9rem; margin-bottom: 0.4rem;"><strong>Name:</strong> {{ booking.guest_name }}</p>
-        <p style="font-size: 0.9rem; margin-bottom: 0.4rem;"><strong>Email:</strong> {{ booking.guest_email }}</p>
-        <p style="font-size: 0.9rem; margin-bottom: 0.4rem;"><strong>Phone:</strong> {{ booking.guest_phone }}</p>
-        <p style="font-size: 0.9rem; margin-bottom: 0.4rem;"><strong>Travelers:</strong> {{ booking.adults_count }} Adults, {{ booking.children_count }} Children</p>
+    <div data-reveal>
+      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm); position: sticky; top: 6rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; color: var(--navy); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Passenger Information</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Name:</strong> {{ booking.guest_name }}</p>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Email:</strong> {{ booking.guest_email }}</p>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Phone:</strong> {{ booking.guest_phone }}</p>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Travelers:</strong> {{ booking.adults_count }} Adults, {{ booking.children_count }} Children</p>
 
         {% if booking.pickup_location %}
-          <p style="font-size: 0.9rem; margin-top: 1rem;"><strong>Pickup Point:</strong> {{ booking.pickup_location }}</p>
+          <p style="font-size: 0.9rem; margin-top: 1rem; padding-top: 0.5rem; border-top: 1px dashed var(--border);"><strong>Pickup Point:</strong> {{ booking.pickup_location }}</p>
         {% endif %}
         {% if booking.special_requests %}
           <p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Special Requests:</strong> {{ booking.special_requests }}</p>
@@ -117,3 +121,4 @@
   </div>
 </div>
 {% endblock %}
+

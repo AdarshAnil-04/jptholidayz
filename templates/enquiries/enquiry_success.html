@@ -2,15 +2,15 @@
 {% block title %}Enquiry Submitted | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div class="container" style="padding: 5rem 0;">
-  <div style="max-width: 580px; margin: 0 auto; background: #FFFFFF; padding: 3rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-lg); text-align: center;">
+<div class="container" style="padding: 5rem 1.5rem;">
+  <div style="max-width: 600px; margin: 0 auto; background: #FFFFFF; padding: 3rem 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-xl); text-align: center;" data-reveal>
     
-    <div style="width: 70px; height: 70px; background: #FEF3C7; color: var(--color-gold-hover); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-size: 2.25rem; margin: 0 auto 1.5rem auto;">
-      ✨
+    <div style="width: 72px; height: 72px; background: var(--accent-light); color: var(--accent-hover); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; border: 1px solid #FDE68A;">
+      <svg class="icon icon-xl" viewBox="0 0 24 24" stroke="var(--accent)"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
     </div>
 
-    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Custom Travel Request Received!</h1>
-    <p style="color: var(--color-slate-600); font-size: 1.05rem; margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--navy);">Custom Travel Request Received!</h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.6;">
       Thank you <strong>{{ enquiry.name }}</strong>! Our bespoke travel consultants will review your destination preference for <strong>{{ enquiry.destination_preference }}</strong> and prepare a customized itinerary quotation.
     </p>
 
@@ -18,3 +18,4 @@
   </div>
 </div>
 {% endblock %}
+

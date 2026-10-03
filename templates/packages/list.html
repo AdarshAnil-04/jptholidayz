@@ -2,18 +2,22 @@
 {% block title %}Explore Holiday Packages | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div style="background: var(--color-navy); color: #FFFFFF; padding: 4rem 0 3rem 0; text-align: center;">
-  <div class="container">
-    <h1 style="color: #FFFFFF; font-size: 2.75rem;">Holiday & Travel Packages</h1>
-    <p style="color: var(--color-slate-300); font-size: 1.1rem; max-width: 650px; margin: 0.75rem auto 0 auto;">
+<div style="background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); color: #FFFFFF; padding: 5rem 0 4rem 0; text-align: center;">
+  <div class="container" data-reveal>
+    <span class="badge-pill badge-pill-dark" style="margin-bottom: 1rem;">
+      <svg class="icon icon-sm icon-secondary" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      CURATED HOLIDAY EXPERIENCES
+    </span>
+    <h1 style="color: #FFFFFF; margin-bottom: 0.75rem;">Holiday &amp; Travel Packages</h1>
+    <p style="color: var(--border-dark); font-size: 1.1rem; max-width: 650px; margin: 0 auto;">
       Browse our complete collection of curated holiday experiences, luxury retreats, and guided tour itineraries.
     </p>
   </div>
 </div>
 
-<div class="container" style="padding: 3rem 0;">
+<div class="container" style="padding: 4rem 1.5rem;">
   <!-- Filtering Bar -->
-  <div style="background: #FFFFFF; padding: 1.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); margin-bottom: 2.5rem; box-shadow: var(--shadow-sm);">
+  <div style="background: #FFFFFF; padding: 1.75rem; border-radius: var(--radius-xl); border: 1px solid var(--border); margin-bottom: 3rem; box-shadow: var(--shadow-sm);" data-reveal>
     <form method="get" action="{% url 'packages:list' %}" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
       <div style="flex: 1; min-width: 200px;" class="form-group" style="margin: 0;">
         <label class="form-label">Search Title / Keywords</label>
@@ -22,7 +26,7 @@
 
       <div style="width: 200px;" class="form-group">
         <label class="form-label">Destination</label>
-        <select name="destination" class="form-input">
+        <select name="destination" class="form-select">
           <option value="">All Destinations</option>
           {% for dest in destinations %}
             <option value="{{ dest.id }}" {% if selected_destination == dest.id|stringformat:"s" %}selected{% endif %}>{{ dest.name }}</option>
@@ -32,7 +36,7 @@
 
       <div style="width: 170px;" class="form-group">
         <label class="form-label">Duration</label>
-        <select name="duration" class="form-input">
+        <select name="duration" class="form-select">
           <option value="">Any Duration</option>
           <option value="short" {% if selected_duration == 'short' %}selected{% endif %}>1 - 3 Days</option>
           <option value="medium" {% if selected_duration == 'medium' %}selected{% endif %}>4 - 7 Days</option>
@@ -47,7 +51,7 @@
 
       <div style="width: 170px;" class="form-group">
         <label class="form-label">Sort By</label>
-        <select name="sort" class="form-input">
+        <select name="sort" class="form-select">
           <option value="-created_at" {% if sort_by == '-created_at' %}selected{% endif %}>Newest Packages</option>
           <option value="price_per_person" {% if sort_by == 'price_per_person' %}selected{% endif %}>Price: Low to High</option>
           <option value="-price_per_person" {% if sort_by == '-price_per_person' %}selected{% endif %}>Price: High to Low</option>
@@ -55,7 +59,8 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary" style="height: 46px; margin-bottom: 1.25rem;">
+      <button type="submit" class="btn btn-primary" style="height: 46px; margin-bottom: 1.35rem;">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
         Filter Packages
       </button>
     </form>
@@ -64,23 +69,29 @@
   {% if packages %}
     <div class="grid-3">
       {% for pkg in packages %}
-        <div class="card">
+        <div class="card" data-reveal>
           <div class="card-img-wrapper">
             {% if pkg.cover_image %}
-              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}">
+              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}" loading="lazy">
             {% else %}
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}" loading="lazy">
             {% endif %}
-            <span class="badge-tag">📍 {{ pkg.destination.name }}</span>
+            <span class="badge-tag">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {{ pkg.destination.name }}
+            </span>
             <span class="price-tag">${{ pkg.price_per_person|floatformat:0 }} <small style="font-size: 0.75rem; font-weight: 400;">/ person</small></span>
           </div>
           <div class="card-body">
             <h3 class="card-title">{{ pkg.title }}</h3>
-            <p class="card-subtitle">⏱️ {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights</p>
-            <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">
+            <p class="card-subtitle">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights
+            </p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
               {{ pkg.overview|truncatewords:20 }}
             </p>
-            <div style="display: flex; gap: 0.75rem;">
+            <div style="display: flex; gap: 0.75rem; margin-top: auto;">
               <a href="{{ pkg.get_absolute_url }}" class="btn btn-outline btn-sm" style="flex: 1;">View Details</a>
               <a href="{% url 'bookings:create' package_slug=pkg.slug %}" class="btn btn-primary btn-sm" style="flex: 1;">Book Request</a>
             </div>
@@ -91,12 +102,12 @@
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-      <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+      <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3.5rem;" data-reveal>
         {% if page_obj.has_previous %}
           <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&destination={{ selected_destination }}&duration={{ selected_duration }}&max_price={{ max_price }}&sort={{ sort_by }}" class="btn btn-outline btn-sm">Previous</a>
         {% endif %}
         
-        <span style="padding: 0.4rem 1rem; align-self: center; font-weight: 600; color: var(--color-navy);">
+        <span style="padding: 0.4rem 1rem; align-self: center; font-weight: 600; color: var(--navy);">
           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
         </span>
 
@@ -107,11 +118,12 @@
     {% endif %}
 
   {% else %}
-    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--color-slate-300);">
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--border);" data-reveal>
       <h3 style="margin-bottom: 0.5rem;">No holiday packages match your criteria</h3>
-      <p style="color: var(--color-slate-600); margin-bottom: 1.5rem;">Try clearing your search filters or submit a custom trip enquiry.</p>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try clearing your search filters or submit a custom trip enquiry.</p>
       <a href="{% url 'enquiries:custom' %}" class="btn btn-primary">Submit Custom Travel Request</a>
     </div>
   {% endif %}
 </div>
 {% endblock %}
+

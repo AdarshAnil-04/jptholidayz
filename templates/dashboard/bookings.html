@@ -51,7 +51,10 @@
             </td>
             <td style="padding: 1rem 1.25rem;">
               {{ b.package.title }}<br>
-              <span style="font-size: 0.85rem; color: var(--color-gold);">📅 {{ b.travel_date|date:"M d, Y" }}</span>
+              <span style="font-size: 0.85rem; color: var(--color-gold); display: inline-flex; align-items: center; gap: 0.3rem;">
+                <svg class="icon icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                {{ b.travel_date|date:"M d, Y" }}
+              </span>
             </td>
             <td style="padding: 1rem 1.25rem; font-weight: 700;">
               ${{ b.total_quoted_price|floatformat:2 }}

@@ -2,69 +2,74 @@
 {% block title %}My Bookings | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div style="background: var(--color-navy); color: #FFFFFF; padding: 3.5rem 0;">
-  <div class="container">
-    <h1 style="color: #FFFFFF; font-size: 2.25rem;">My Travel Bookings</h1>
-    <p style="color: var(--color-slate-300);">Track your submitted holiday requests, status workflow, and download official itinerary PDFs.</p>
+<div style="background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); color: #FFFFFF; padding: 4rem 0 3.5rem 0;">
+  <div class="container" data-reveal>
+    <h1 style="color: #FFFFFF; margin-bottom: 0.5rem;">My Travel Bookings</h1>
+    <p style="color: var(--border-dark); font-size: 1.05rem;">Track your submitted holiday requests, status workflow, and download official itinerary PDFs.</p>
   </div>
 </div>
 
-<div class="container" style="padding: 3rem 0;">
+<div class="container" style="padding: 4rem 1.5rem;">
   {% if bookings %}
-    <div style="background: #FFFFFF; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); overflow: hidden; box-shadow: var(--shadow-sm);">
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
-          <thead>
-            <tr style="background: var(--color-slate-100); color: var(--color-navy); border-bottom: 2px solid var(--color-slate-200);">
-              <th style="padding: 1rem 1.25rem;">Reference</th>
-              <th style="padding: 1rem 1.25rem;">Package & Destination</th>
-              <th style="padding: 1rem 1.25rem;">Travel Date</th>
-              <th style="padding: 1rem 1.25rem;">Total Price</th>
-              <th style="padding: 1rem 1.25rem;">Status</th>
-              <th style="padding: 1rem 1.25rem; text-align: right;">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for booking in bookings %}
-              <tr style="border-bottom: 1px solid var(--color-slate-200);">
-                <td style="padding: 1rem 1.25rem; font-weight: 700; color: var(--color-navy);">
-                  {{ booking.reference_code }}
-                </td>
-                <td style="padding: 1rem 1.25rem;">
-                  <strong>{{ booking.package.title }}</strong><br>
-                  <span style="font-size: 0.85rem; color: var(--color-slate-600);">📍 {{ booking.package.destination.name }}</span>
-                </td>
-                <td style="padding: 1rem 1.25rem;">
-                  {{ booking.travel_date|date:"M d, Y" }}
-                </td>
-                <td style="padding: 1rem 1.25rem; font-weight: 700;">
-                  ${{ booking.total_quoted_price|floatformat:2 }}
-                </td>
-                <td style="padding: 1rem 1.25rem;">
-                  <span class="status-badge status-{{ booking.status|lower }}">{{ booking.get_status_display }}</span>
-                </td>
-                <td style="padding: 1rem 1.25rem; text-align: right;">
+    <div class="table-responsive" data-reveal>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Package &amp; Destination</th>
+            <th>Travel Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th style="text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+            <tr>
+              <td style="font-weight: 700; color: var(--navy); font-family: monospace; font-size: 1rem;">
+                {{ booking.reference_code }}
+              </td>
+              <td>
+                <strong style="color: var(--navy);">{{ booking.package.title }}</strong><br>
+                <span style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; margin-top: 0.2rem;">
+                  <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  {{ booking.package.destination.name }}
+                </span>
+              </td>
+              <td style="color: var(--text-main);">
+                {{ booking.travel_date|date:"M d, Y" }}
+              </td>
+              <td style="font-weight: 700; color: var(--navy); font-family: var(--font-heading);">
+                ${{ booking.total_quoted_price|floatformat:2 }}
+              </td>
+              <td>
+                <span class="status-badge status-{{ booking.status|lower }}">{{ booking.get_status_display }}</span>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.4rem; align-items: center;">
                   <a href="{% url 'bookings:detail' reference_code=booking.reference_code %}" class="btn btn-outline btn-sm">
                     View Details
                   </a>
                   {% if booking.status == 'CONFIRMED' or booking.status == 'COMPLETED' %}
-                    <a href="{% url 'reports:itinerary_pdf' reference_code=booking.reference_code %}" target="_blank" class="btn btn-primary btn-sm" style="margin-left: 0.25rem;">
-                      📄 PDF
+                    <a href="{% url 'reports:itinerary_pdf' reference_code=booking.reference_code %}" target="_blank" class="btn btn-primary btn-sm">
+                      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                      PDF
                     </a>
                   {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   {% else %}
-    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--color-slate-300);">
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--border);" data-reveal>
       <h3 style="margin-bottom: 0.5rem;">No bookings submitted yet</h3>
-      <p style="color: var(--color-slate-600); margin-bottom: 1.5rem;">Explore our travel packages and submit your first holiday request.</p>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Explore our travel packages and submit your first holiday request.</p>
       <a href="{% url 'packages:list' %}" class="btn btn-primary">Browse Packages</a>
     </div>
   {% endif %}
 </div>
 {% endblock %}
+

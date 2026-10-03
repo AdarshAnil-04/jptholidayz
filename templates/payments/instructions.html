@@ -27,8 +27,11 @@
         <p><strong>Reference to Include:</strong> <span style="font-family: monospace; color: var(--color-gold); font-weight: 700;">{{ booking.reference_code }}</span></p>
       </div>
 
-      <div style="margin-top: 1.5rem; padding: 1rem; background: #FFFBEB; border-radius: var(--radius-md); font-size: 0.85rem; color: #92400E;">
-        ⚠️ <strong>Note:</strong> Always include your Booking Reference ({{ booking.reference_code }}) in the bank transfer memo to ensure fast verification.
+      <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: #FFFBEB; border-radius: var(--radius-md); font-size: 0.85rem; color: #92400E; display: flex; align-items: flex-start; gap: 0.75rem; border: 1px solid #FCD34D;">
+        <svg class="icon icon-sm" style="color: #D97706; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div>
+          <strong>Important Note:</strong> Always include your Booking Reference (<strong>{{ booking.reference_code }}</strong>) in the bank transfer memo to ensure fast verification.
+        </div>
       </div>
     </div>
 

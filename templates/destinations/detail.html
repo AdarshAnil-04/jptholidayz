@@ -2,56 +2,70 @@
 {% block title %}{{ destination.name }} Travel Packages | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.75) 100%),
-            url('{% if destination.cover_image %}{{ destination.cover_image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1920&q=80{% endif %}') center/cover no-repeat; color: #FFFFFF; padding: 5rem 0 4rem 0;">
-  <div class="container">
-    <span class="badge-tag" style="position: static; display: inline-block; background: var(--color-gold); margin-bottom: 1rem;">
-      📍 {{ destination.country }}
+<!-- Destination Hero Banner -->
+<div style="background: linear-gradient(135deg, rgba(9, 13, 22, 0.88) 0%, rgba(15, 23, 42, 0.78) 100%),
+            url('{% if destination.cover_image %}{{ destination.cover_image.url }}{% else %}https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1920&q=80{% endif %}') center/cover no-repeat; color: #FFFFFF; padding: 5.5rem 0 4.5rem 0;">
+  <div class="container" data-reveal>
+    <span class="badge-pill badge-pill-dark" style="margin-bottom: 1rem;">
+      <svg class="icon icon-sm icon-secondary" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      {{ destination.country }}
     </span>
-    <h1 style="color: #FFFFFF; font-size: 3rem;">{{ destination.name }}</h1>
+    <h1 style="color: #FFFFFF; margin-bottom: 0.5rem;">{{ destination.name }}</h1>
     {% if destination.tagline %}
-      <p style="font-size: 1.2rem; color: var(--color-slate-300); max-width: 700px; margin-top: 0.5rem;">{{ destination.tagline }}</p>
+      <p style="font-size: 1.2rem; color: var(--border-dark); max-width: 700px;">{{ destination.tagline }}</p>
     {% endif %}
   </div>
 </div>
 
-<div class="container" style="padding: 4rem 0;">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
-    <div>
-      <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">About Destination</h2>
-      <p style="font-size: 1.05rem; line-height: 1.7; color: var(--color-slate-700);">
+<div class="container" style="padding: 4rem 1.5rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+    <div data-reveal>
+      <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">About {{ destination.name }}</h2>
+      <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-main);">
         {{ destination.description }}
       </p>
     </div>
-    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); align-self: flex-start;">
-      <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Quick Overview</h3>
-      <p style="margin-bottom: 0.5rem; font-size: 0.95rem;"><strong>Country:</strong> {{ destination.country }}</p>
-      <p style="margin-bottom: 1rem; font-size: 0.95rem;"><strong>Active Packages:</strong> {{ destination.package_count }} Available</p>
-      <a href="{% url 'enquiries:custom' %}" class="btn btn-primary btn-sm" style="width: 100%;">Enquire Custom {{ destination.name }} Trip</a>
+    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm); align-self: flex-start;" data-reveal>
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; color: var(--navy);">Quick Overview</h3>
+      <p style="margin-bottom: 0.75rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <strong>Country:</strong> {{ destination.country }}
+      </p>
+      <p style="margin-bottom: 1.25rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <strong>Active Packages:</strong> {{ destination.package_count }} Available
+      </p>
+      <a href="{% url 'enquiries:custom' %}" class="btn btn-primary btn-full">Enquire Custom {{ destination.name }} Trip</a>
     </div>
   </div>
 
-  <h2 style="font-size: 2rem; margin-bottom: 2rem;">Available Travel Packages in {{ destination.name }}</h2>
+  <div style="margin-bottom: 2.5rem;" data-reveal>
+    <span class="badge-pill" style="margin-bottom: 0.5rem;">Featured Itineraries</span>
+    <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Available Holiday Packages in {{ destination.name }}</h2>
+  </div>
 
   {% if packages %}
     <div class="grid-3">
       {% for pkg in packages %}
-        <div class="card">
+        <div class="card" data-reveal>
           <div class="card-img-wrapper">
             {% if pkg.cover_image %}
-              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}">
+              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}" loading="lazy">
             {% else %}
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}" loading="lazy">
             {% endif %}
-            <span class="price-tag">${{ pkg.price_per_person|floatformat:0 }}</span>
+            <span class="price-tag">${{ pkg.price_per_person|floatformat:0 }} <small style="font-size: 0.75rem; font-weight: 400;">/ person</small></span>
           </div>
           <div class="card-body">
             <h3 class="card-title">{{ pkg.title }}</h3>
-            <p class="card-subtitle">⏱️ {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights</p>
-            <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">
+            <p class="card-subtitle">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights
+            </p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
               {{ pkg.overview|truncatewords:18 }}
             </p>
-            <div style="display: flex; gap: 0.75rem;">
+            <div style="display: flex; gap: 0.75rem; margin-top: auto;">
               <a href="{{ pkg.get_absolute_url }}" class="btn btn-outline btn-sm" style="flex: 1;">View Details</a>
               <a href="{% url 'bookings:create' package_slug=pkg.slug %}" class="btn btn-primary btn-sm" style="flex: 1;">Book Request</a>
             </div>
@@ -60,10 +74,11 @@
       {% endfor %}
     </div>
   {% else %}
-    <div style="text-align: center; padding: 3rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--color-slate-300);">
-      <p style="color: var(--color-slate-600);">No specific packages currently active for {{ destination.name }}.</p>
-      <a href="{% url 'enquiries:custom' %}" class="btn btn-primary btn-sm" style="margin-top: 1rem;">Request Custom Package</a>
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--border);" data-reveal>
+      <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1rem;">No specific packages currently active for {{ destination.name }}.</p>
+      <a href="{% url 'enquiries:custom' %}" class="btn btn-primary btn-sm">Request Custom Package</a>
     </div>
   {% endif %}
 </div>
 {% endblock %}
+

@@ -3,25 +3,25 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero bg-airplane-watermark">
-  <div class="container hero-content">
+<section class="hero">
+  <div class="container hero-content" data-reveal>
     <span class="badge-pill badge-pill-dark" style="margin-bottom: 1.25rem;">
-      <svg width="14" height="14" viewBox="0 0 100 100" fill="none"><path d="M 10,50 L 90,10 L 60,90 L 45,55 Z" fill="#8BB8C7"/></svg>
+      <svg class="icon icon-sm icon-secondary" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
       BESPOKE LUXURY HOLIDAYS &amp; EXPERIENCES
     </span>
     <h1>Discover Extraordinary World Holidays With JPT Holidays</h1>
     <p>From tropical island getaways to alpine adventures, experience seamless travel planning, luxury stays, and curated itineraries.</p>
 
     <!-- Quick Search Widget -->
-    <div style="background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 1.75rem; border-radius: var(--radius-xl); color: var(--color-navy); margin-top: 2rem; box-shadow: var(--shadow-xl); border: 1px solid rgba(139, 184, 199, 0.3);">
-      <form action="{% url 'core:search' %}" method="get" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+    <div class="search-card" data-reveal>
+      <form action="{% url 'core:search' %}" method="get" class="search-form">
         <div style="flex: 1; min-width: 200px;" class="form-group" style="margin: 0;">
           <label class="form-label" style="text-align: left;">Search Keyword / Destination</label>
           <input type="text" name="q" class="form-input" placeholder="e.g. Bali, Paris, Safari...">
         </div>
         <div style="width: 200px;" class="form-group">
           <label class="form-label" style="text-align: left;">Destination</label>
-          <select name="destination" class="form-input">
+          <select name="destination" class="form-select">
             <option value="">All Destinations</option>
             {% for dest in featured_destinations %}
               <option value="{{ dest.id }}">{{ dest.name }}</option>
@@ -32,8 +32,9 @@
           <label class="form-label" style="text-align: left;">Max Budget ($)</label>
           <input type="number" name="max_price" class="form-input" placeholder="e.g. 2500">
         </div>
-        <button type="submit" class="btn btn-primary" style="height: 46px; margin-bottom: 1.25rem;">
-          ✈️ Find Packages
+        <button type="submit" class="btn btn-primary" style="height: 46px; margin-bottom: 1.35rem;">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Find Packages
         </button>
       </form>
     </div>
@@ -41,35 +42,44 @@
 </section>
 
 <!-- Featured Travel Packages Section -->
-<section class="container" style="padding: 5rem 0;">
-  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+<section class="container" style="padding: 5rem 1.5rem;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;" data-reveal>
     <div>
       <span class="badge-pill" style="margin-bottom: 0.5rem;">Curated Collections</span>
       <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Featured Holiday Packages</h2>
     </div>
-    <a href="{% url 'packages:list' %}" class="btn btn-outline-plum" style="color: var(--color-plum); border-color: var(--color-plum);">View All Packages →</a>
+    <a href="{% url 'packages:list' %}" class="btn btn-outline-primary">
+      View All Packages
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
   </div>
 
   {% if featured_packages %}
     <div class="grid-3">
       {% for pkg in featured_packages %}
-        <div class="card">
+        <div class="card" data-reveal>
           <div class="card-img-wrapper">
             {% if pkg.cover_image %}
-              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}">
+              <img src="{{ pkg.cover_image.url }}" alt="{{ pkg.title }}" loading="lazy">
             {% else %}
-              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="{{ pkg.title }}" loading="lazy">
             {% endif %}
-            <span class="badge-tag">📍 {{ pkg.destination.name }}</span>
+            <span class="badge-tag">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {{ pkg.destination.name }}
+            </span>
             <span class="price-tag">${{ pkg.price_per_person|floatformat:0 }} <small style="font-size: 0.75rem; font-weight: 400;">/ person</small></span>
           </div>
           <div class="card-body">
             <h3 class="card-title">{{ pkg.title }}</h3>
-            <p class="card-subtitle">⏱️ {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights</p>
-            <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem; line-height: 1.5;">
+            <p class="card-subtitle">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {{ pkg.duration_days }} Days / {{ pkg.duration_nights }} Nights
+            </p>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5;">
               {{ pkg.overview|truncatewords:20 }}
             </p>
-            <div style="display: flex; gap: 0.75rem;">
+            <div style="display: flex; gap: 0.75rem; margin-top: auto;">
               <a href="{{ pkg.get_absolute_url }}" class="btn btn-outline btn-sm" style="flex: 1;">View Details</a>
               <a href="{% url 'bookings:create' package_slug=pkg.slug %}" class="btn btn-primary btn-sm" style="flex: 1;">Book Request</a>
             </div>
@@ -78,129 +88,165 @@
       {% endfor %}
     </div>
   {% else %}
-    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-lg); border: 1px dashed var(--color-slate-300);">
-      <p style="font-size: 1.1rem; color: var(--color-slate-600);">No travel packages published yet. Please check back shortly!</p>
+    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-lg); border: 1px dashed var(--border);">
+      <p style="font-size: 1.1rem; color: var(--text-muted);">No travel packages published yet. Please check back shortly!</p>
     </div>
   {% endif %}
 </section>
 
 <!-- Popular Destinations Section -->
-<section style="background-color: var(--color-plum-subtle); padding: 5rem 0;">
+<section style="background-color: var(--primary-subtle); padding: 5rem 0;">
   <div class="container">
-    <div style="text-align: center; max-width: 650px; margin: 0 auto 3rem auto;">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 3rem auto;" data-reveal>
       <span class="badge-pill" style="margin-bottom: 0.5rem;">Worldwide Escapes</span>
       <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Popular Destinations</h2>
-      <p style="color: var(--color-slate-600);">Handpicked iconic destinations around the world tailored for leisure, honeymooners, and family vacations.</p>
+      <p style="color: var(--text-muted);">Handpicked iconic destinations around the world tailored for leisure, honeymooners, and family vacations.</p>
     </div>
 
     {% if featured_destinations %}
       <div class="grid-3">
         {% for dest in featured_destinations %}
-          <div class="card">
+          <div class="card" data-reveal>
             <div class="card-img-wrapper" style="height: 250px;">
               {% if dest.cover_image %}
-                <img src="{{ dest.cover_image.url }}" alt="{{ dest.name }}">
+                <img src="{{ dest.cover_image.url }}" alt="{{ dest.name }}" loading="lazy">
               {% else %}
-                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="{{ dest.name }}">
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="{{ dest.name }}" loading="lazy">
               {% endif %}
-              <span class="badge-tag" style="background: rgba(115, 46, 78, 0.85);">📍 {{ dest.country }}</span>
+              <span class="badge-tag">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                {{ dest.country }}
+              </span>
             </div>
             <div class="card-body">
               <h3 class="card-title">{{ dest.name }}</h3>
-              <p style="font-size: 0.875rem; color: var(--color-plum); font-weight: 700; margin-bottom: 0.5rem;">
-                ✈️ {{ dest.package_count }} Package{{ dest.package_count|pluralize }} Available
+              <p style="font-size: 0.875rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                {{ dest.package_count }} Package{{ dest.package_count|pluralize }} Available
               </p>
-              <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.25rem;">
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
                 {{ dest.tagline|default:dest.description|truncatewords:18 }}
               </p>
-              <a href="{{ dest.get_absolute_url }}" class="btn btn-outline btn-sm" style="width: 100%; border-color: var(--color-plum); color: var(--color-plum);">Explore {{ dest.name }}</a>
+              <a href="{{ dest.get_absolute_url }}" class="btn btn-outline-primary btn-sm" style="width: 100%; margin-top: auto;">Explore {{ dest.name }}</a>
             </div>
           </div>
         {% endfor %}
       </div>
     {% else %}
-      <p style="text-align: center; color: var(--color-slate-600);">No featured destinations available right now.</p>
+      <p style="text-align: center; color: var(--text-muted);">No featured destinations available right now.</p>
     {% endif %}
   </div>
 </section>
 
 <!-- Custom Travel Banner -->
-<section style="background: linear-gradient(135deg, var(--color-plum-dark) 0%, var(--color-navy) 100%); color: #FFFFFF; padding: 4.5rem 0; margin: 4rem 0; position: relative; overflow: hidden;">
-  <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; position: relative; z-index: 2;">
+<section style="background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); color: #FFFFFF; padding: 4.5rem 0; margin: 4rem 0; position: relative; overflow: hidden;">
+  <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; position: relative; z-index: 2;" data-reveal>
     <div style="max-width: 650px;">
       <span class="badge-pill badge-pill-dark" style="margin-bottom: 0.75rem;">Bespoke Travel Engineering</span>
       <h2 style="color: #FFFFFF; font-size: 2.25rem; margin-top: 0.4rem;">Looking for a Customized Holiday Plan?</h2>
-      <p style="color: var(--color-slate-300); font-size: 1.1rem; margin-top: 0.75rem;">
+      <p style="color: var(--border-dark); font-size: 1.1rem; margin-top: 0.75rem;">
         Tell our travel specialists your preferred travel dates, group size, and budget, and we will craft a personalized itinerary just for you.
       </p>
     </div>
-    <a href="{% url 'enquiries:custom' %}" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.05rem;">
-      ✈️ Plan Custom Trip Now
+    <a href="{% url 'enquiries:custom' %}" class="btn btn-accent btn-lg">
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      Plan Custom Trip Now
     </a>
   </div>
 </section>
 
 <!-- Why Choose JPT Holidays -->
-<section class="container" style="padding: 4rem 0;">
-  <div style="text-align: center; margin-bottom: 3.5rem;">
-    <span style="color: var(--color-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">The JPT Difference</span>
+<section class="container" style="padding: 4rem 1.5rem;">
+  <div style="text-align: center; margin-bottom: 3.5rem;" data-reveal>
+    <span style="color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">The JPT Difference</span>
     <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">Why Book With JPT Holidays?</h2>
   </div>
 
   <div class="grid-4">
-    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+    <div class="feature-box" data-reveal>
+      <div class="feature-icon-wrapper">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
       <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Trusted Travel Desk</h3>
-      <p style="font-size: 0.875rem; color: var(--color-slate-600);">Professional travel consultants reviewing every booking request for maximum peace of mind.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted);">Professional travel consultants reviewing every booking request for maximum peace of mind.</p>
     </div>
-    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">💎</div>
+    <div class="feature-box" data-reveal>
+      <div class="feature-icon-wrapper">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
       <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Transparent Pricing</h3>
-      <p style="font-size: 0.875rem; color: var(--color-slate-600);">No hidden fees or unexpected surcharges. Clear inclusions and financial statements.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted);">No hidden fees or unexpected surcharges. Clear inclusions and financial statements.</p>
     </div>
-    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📋</div>
+    <div class="feature-box" data-reveal>
+      <div class="feature-icon-wrapper">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
       <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Branded PDF Itineraries</h3>
-      <p style="font-size: 0.875rem; color: var(--color-slate-600);">Instant downloadable PDF travel vouchers with day-by-day activity timelines.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted);">Instant downloadable PDF travel vouchers with day-by-day activity timelines.</p>
     </div>
-    <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); text-align: center;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📞</div>
+    <div class="feature-box" data-reveal>
+      <div class="feature-icon-wrapper">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
       <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Dedicated Support</h3>
-      <p style="font-size: 0.875rem; color: var(--color-slate-600);">24/7 travel desk support during your trip via WhatsApp and phone assistance.</p>
+      <p style="font-size: 0.875rem; color: var(--text-muted);">24/7 travel desk support during your trip via WhatsApp and phone assistance.</p>
     </div>
   </div>
 </section>
 
-<!-- Sample Testimonials Section (Labeled as Sample Content) -->
-<section style="background-color: var(--color-slate-100); padding: 5rem 0;">
+<!-- Sample Testimonials Section -->
+<section style="background-color: var(--surface-alt); padding: 5rem 0;">
   <div class="container">
-    <div style="text-align: center; margin-bottom: 3rem;">
-      <span style="color: var(--color-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Traveler Experiences</span>
+    <div style="text-align: center; margin-bottom: 3rem;" data-reveal>
+      <span style="color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">Traveler Experiences</span>
       <h2 style="font-size: 2.25rem; margin-top: 0.3rem;">What Our Travelers Say</h2>
-      <p style="font-size: 0.8rem; color: var(--color-slate-600); margin-top: 0.3rem;">[Sample Traveler Testimonials]</p>
     </div>
 
     <div class="grid-3">
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
-          "JPT Holidays arranged our family trip to Bali effortlessly. The day-by-day itinerary PDF made coordination so simple. Highly recommended!"
-        </p>
-        <strong>- Marcus V. [Sample Reviewer]</strong>
+      <div class="testimonial-card" data-reveal>
+        <div>
+          <div class="star-rating">
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.6;">
+            "JPT Holidays arranged our family trip to Bali effortlessly. The day-by-day itinerary PDF made coordination so simple. Highly recommended!"
+          </p>
+        </div>
+        <strong style="color: var(--navy); font-size: 0.9rem;">- Marcus V.</strong>
       </div>
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
-          "The custom travel enquiry team responded within hours and tailored our Swiss Alps honeymoon within our exact budget range."
-        </p>
-        <strong>- Sophia & Liam [Sample Reviewer]</strong>
+      <div class="testimonial-card" data-reveal>
+        <div>
+          <div class="star-rating">
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.6;">
+            "The custom travel enquiry team responded within hours and tailored our Swiss Alps honeymoon within our exact budget range."
+          </p>
+        </div>
+        <strong style="color: var(--navy); font-size: 0.9rem;">- Sophia &amp; Liam</strong>
       </div>
-      <div style="background: #FFFFFF; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-        <div style="color: var(--color-gold); margin-bottom: 0.75rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; font-size: 0.95rem; color: var(--color-slate-700); margin-bottom: 1.25rem;">
-          "Clear payment tracking and instant updates on our booking reference. Very professional travel agency platform!"
-        </p>
-        <strong>- David K. [Sample Reviewer]</strong>
+      <div class="testimonial-card" data-reveal>
+        <div>
+          <div class="star-rating">
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.6;">
+            "Clear payment tracking and instant updates on our booking reference. Very professional travel agency platform!"
+          </p>
+        </div>
+        <strong style="color: var(--navy); font-size: 0.9rem;">- David K.</strong>
       </div>
     </div>
   </div>
