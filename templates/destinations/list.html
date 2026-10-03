@@ -2,55 +2,55 @@
 {% block title %}Explore Travel Destinations | {{ site_settings.site_name }}{% endblock %}
 
 {% block content %}
-<div style="background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%); color: #FFFFFF; padding: 5rem 0 4rem 0; text-align: center;">
+<div style="background: var(--gradient-living-hero); color: #FFFFFF; padding: 6rem 0 4.5rem 0; text-align: center; position: relative; overflow: hidden;">
   <div class="container" data-reveal>
-    <span class="badge-pill badge-pill-dark" style="margin-bottom: 1rem;">
+    <span class="badge-pill badge-pill-dark" style="margin-bottom: 1rem; border-color: var(--turquoise); color: var(--turquoise);">
       <svg class="icon icon-sm icon-secondary" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
       GLOBAL DESTINATIONS
     </span>
-    <h1 style="color: #FFFFFF; margin-bottom: 0.75rem;">Worldwide Travel Destinations</h1>
-    <p style="color: var(--border-dark); font-size: 1.1rem; max-width: 650px; margin: 0 auto;">
+    <h1 style="color: #FFFFFF; font-size: 3rem; margin-bottom: 0.75rem;">Worldwide Travel Destinations</h1>
+    <p style="color: var(--text-light); font-size: 1.15rem; max-width: 680px; margin: 0 auto; line-height: 1.6;">
       Discover handcrafted holiday packages across tropical paradises, alpine escapes, and vibrant cultural capitals.
     </p>
   </div>
 </div>
 
-<div class="container" style="padding: 4rem 1.5rem;">
+<div class="container" style="padding: 4.5rem 1.5rem;">
   {% if destinations %}
     <div class="grid-3">
       {% for dest in destinations %}
-        <div class="card" data-reveal>
-          <div class="card-img-wrapper" style="height: 240px;">
+        <div class="card-living" data-reveal>
+          <div class="card-img-wrapper" data-reveal-clip style="height: 260px;">
             {% if dest.cover_image %}
               <img src="{{ dest.cover_image.url }}" alt="{{ dest.name }}" loading="lazy">
             {% else %}
               <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="{{ dest.name }}" loading="lazy">
             {% endif %}
-            <span class="badge-tag">
-              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="badge-tag" style="background: rgba(7, 26, 43, 0.85); border: 1px solid rgba(255,255,255,0.15);">
+              <svg class="icon icon-sm" style="color: var(--turquoise);" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               {{ dest.country }}
             </span>
           </div>
-          <div class="card-body">
-            <h3 class="card-title">{{ dest.name }}</h3>
-            <p style="font-size: 0.875rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
-              <svg class="icon icon-sm icon-primary" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <div class="card-body" style="padding: 1.75rem;">
+            <h3 class="card-title" style="color: #FFFFFF; font-size: 1.35rem; margin-bottom: 0.4rem;">{{ dest.name }}</h3>
+            <p style="font-size: 0.875rem; color: var(--turquoise); font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
               {{ dest.package_count }} Package{{ dest.package_count|pluralize }} Available
             </p>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6;">
               {{ dest.tagline|default:dest.description|truncatewords:20 }}
             </p>
-            <a href="{{ dest.get_absolute_url }}" class="btn btn-outline-primary btn-sm" style="width: 100%; margin-top: auto;">
-              View Destination &amp; Packages
-              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <a href="{{ dest.get_absolute_url }}" class="btn btn-outline-white btn-sm btn-magnetic" style="width: 100%; margin-top: auto; border-color: rgba(24, 200, 184, 0.4);">
+              <span>View Destination &amp; Packages</span>
+              <svg class="icon icon-sm btn-icon-shift" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
           </div>
         </div>
       {% endfor %}
     </div>
   {% else %}
-    <div style="text-align: center; padding: 4rem; background: #FFFFFF; border-radius: var(--radius-xl); border: 1px dashed var(--border);">
-      <h3>No destinations published yet</h3>
+    <div style="text-align: center; padding: 4rem; background: var(--surface); border-radius: var(--radius-xl); border: 1px dashed var(--border);">
+      <h3 style="color: #FFF;">No destinations published yet</h3>
     </div>
   {% endif %}
 </div>

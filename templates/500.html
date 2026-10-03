@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Server Error | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div style="min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4rem 1.5rem;">
+  <div style="max-width: 600px; padding: 3.5rem 2.5rem;" class="card-living" data-reveal>
+    <div style="font-size: 5rem; font-weight: 800; background: linear-gradient(135deg, var(--warm-orange), var(--sunset-coral)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: var(--font-heading); line-height: 1;">
+      500
+    </div>
+    <h1 style="font-size: 2.25rem; color: #FFFFFF; margin: 1rem 0 0.5rem 0;">System Interruption</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
+      We encountered a temporary technical glitch. Our travel engineering team has been notified.
+    </p>
+    <a href="{% url 'core:home' %}" class="btn btn-primary btn-lg btn-magnetic" style="background: var(--gradient-sunset-coral); border: none; box-shadow: var(--glow-sunset);">
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>Return to Homepage</span>
+    </a>
+  </div>
+</div>
+{% endblock %}

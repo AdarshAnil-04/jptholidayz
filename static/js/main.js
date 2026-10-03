@@ -126,23 +126,107 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 6000);
   });
 
-  // 7. Form Submission Loading States
-  const forms = document.querySelectorAll('form[data-loading-state]');
-  forms.forEach(form => {
-    form.addEventListener('submit', function() {
-      const submitBtn = this.querySelector('button[type="submit"]');
-      if (submitBtn && !submitBtn.disabled) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-          <svg class="icon icon-sm spin" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
-            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-          </svg>
-          Processing...
-        `;
+  // 8. Scroll Progress Indicator Line
+  const progressBar = document.querySelector('.scroll-progress-bar');
+  if (progressBar) {
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+    }, { passive: true });
+  }
+
+  // 9. Hero Choreography Load Sequence
+  const heroElement = document.querySelector('.hero');
+  if (heroElement) {
+    setTimeout(function() {
+      heroElement.classList.add('hero-loaded');
+    }, 100);
+  }
+
+  // 10. Desktop Cursor Atmosphere Glow Orb
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!isTouchDevice && !prefersReducedMotion) {
+    const pointerOrb = document.createElement('div');
+    pointerOrb.className = 'pointer-glow-orb';
+    document.body.appendChild(pointerOrb);
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let orbX = mouseX;
+    let orbY = mouseY;
+
+    window.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    function animatePointerOrb() {
+      orbX += (mouseX - orbX) * 0.12;
+      orbY += (mouseY - orbY) * 0.12;
+      pointerOrb.style.left = orbX + 'px';
+      pointerOrb.style.top = orbY + 'px';
+      requestAnimationFrame(animatePointerOrb);
+    }
+    animatePointerOrb();
+  }
+
+  // 11. Magnetic Button Physics
+  const magneticButtons = document.querySelectorAll('.btn-magnetic');
+  if (!isTouchDevice && !prefersReducedMotion) {
+    magneticButtons.forEach(btn => {
+      btn.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        this.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px) scale(1.03)`;
+      });
+
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translate(0px, 0px) scale(1)';
+      });
+    });
+  }
+
+  // 12. Clip-Path Image Reveal Observer
+  const clipRevealElements = document.querySelectorAll('[data-reveal-clip]');
+  if (clipRevealElements.length > 0) {
+    if ('IntersectionObserver' in window && !prefersReducedMotion) {
+      const clipObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      clipRevealElements.forEach(el => clipObserver.observe(el));
+    } else {
+      clipRevealElements.forEach(el => el.classList.add('revealed'));
+    }
+  }
+
+  // 13. Page Transition Sweep Overlay
+  const transitionOverlay = document.querySelector('.page-transition-overlay');
+  if (transitionOverlay && !prefersReducedMotion) {
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('javascript') && !link.hasAttribute('target') && link.hostname === window.location.hostname) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          transitionOverlay.classList.add('active');
+          setTimeout(function() {
+            window.location.href = href;
+          }, 350);
+        });
       }
     });
-  });
+  }
 
 });
+
 
