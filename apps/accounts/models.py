@@ -4,8 +4,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     class Role(models.TextChoices):
         SUPER_ADMIN = 'SUPER_ADMIN', 'Super Admin / Owner'
-        BOOKING_STAFF = 'BOOKING_STAFF', 'Booking Staff'
-        CONTENT_MANAGER = 'CONTENT_MANAGER', 'Content Manager'
+        STAFF = 'STAFF', 'Agency Staff'
         CUSTOMER = 'CUSTOMER', 'Customer'
 
     role = models.CharField(
@@ -22,12 +21,16 @@ class User(AbstractUser):
         return self.role == self.Role.CUSTOMER
 
     @property
+    def is_staff_member(self):
+        return self.role in [self.Role.STAFF, self.Role.SUPER_ADMIN] or self.is_staff or self.is_superuser
+
+    @property
     def is_booking_staff(self):
-        return self.role in [self.Role.BOOKING_STAFF, self.Role.SUPER_ADMIN] or self.is_superuser
+        return self.is_staff_member
 
     @property
     def is_content_manager(self):
-        return self.role in [self.Role.CONTENT_MANAGER, self.Role.SUPER_ADMIN] or self.is_superuser
+        return self.is_staff_member
 
     @property
     def is_admin_owner(self):

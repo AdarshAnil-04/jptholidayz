@@ -66,7 +66,7 @@ def dashboard_bookings_view(request):
 @booking_staff_required
 def dashboard_booking_detail_view(request, reference_code):
     booking = get_object_or_404(Booking, reference_code=reference_code)
-    staff_users = User.objects.filter(role__in=['BOOKING_STAFF', 'SUPER_ADMIN'], is_active=True)
+    staff_users = User.objects.filter(role__in=['STAFF', 'BOOKING_STAFF', 'SUPER_ADMIN'], is_active=True)
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -192,7 +192,7 @@ def dashboard_enquiries_view(request):
 @booking_staff_required
 def dashboard_enquiry_detail_view(request, pk):
     enquiry = get_object_or_404(CustomEnquiry, pk=pk)
-    staff_users = User.objects.filter(role__in=['BOOKING_STAFF', 'SUPER_ADMIN'], is_active=True)
+    staff_users = User.objects.filter(role__in=['STAFF', 'BOOKING_STAFF', 'SUPER_ADMIN'], is_active=True)
 
     if request.method == 'POST':
         action = request.POST.get('action')

@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 'email': 'staff@jptholidays.com',
                 'first_name': 'Sarah',
                 'last_name': 'Jenkins',
-                'role': User.Role.BOOKING_STAFF,
+                'role': User.Role.STAFF,
                 'is_staff': True
             }
         )
