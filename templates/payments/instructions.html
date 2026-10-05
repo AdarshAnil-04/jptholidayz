@@ -13,22 +13,22 @@
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; max-width: 950px; margin: 0 auto;">
     
     <!-- Bank & Wire Instructions Panel -->
-    <div style="background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-      <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem;">Agency Wire & Transfer Details</h2>
-      <p style="font-size: 0.95rem; color: var(--color-slate-600); margin-bottom: 1.5rem;">
+    <div style="background: var(--surface); padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); color: #FFFFFF;">
+      <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem; color: #FFFFFF;">Agency Wire & Transfer Details</h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">
         Please transfer your agreed booking deposit or full payment to our official travel desk account using the details below:
       </p>
 
-      <div style="background: var(--color-slate-50); padding: 1.5rem; border-radius: var(--radius-lg); border-left: 4px solid var(--color-gold); font-size: 0.95rem; line-height: 1.8;">
+      <div style="background: #0D1B2A; padding: 1.5rem; border-radius: var(--radius-lg); border-left: 4px solid var(--secondary); font-size: 0.95rem; line-height: 1.8; color: #F8FAFC;">
         <p><strong>Bank Name:</strong> Global Travel Commerce Bank [Placeholder]</p>
         <p><strong>Account Name:</strong> JPT Holidays Ltd [Placeholder]</p>
         <p><strong>Account Number:</strong> 9876-5432-1098 [Placeholder]</p>
         <p><strong>SWIFT / BIC Code:</strong> JPTUS33XXXX [Placeholder]</p>
-        <p><strong>Reference to Include:</strong> <span style="font-family: monospace; color: var(--color-gold); font-weight: 700;">{{ booking.reference_code }}</span></p>
+        <p><strong>Reference to Include:</strong> <span style="font-family: monospace; color: var(--secondary); font-weight: 700;">{{ booking.reference_code }}</span></p>
       </div>
 
-      <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: #FFFBEB; border-radius: var(--radius-md); font-size: 0.85rem; color: #92400E; display: flex; align-items: flex-start; gap: 0.75rem; border: 1px solid #FCD34D;">
-        <svg class="icon icon-sm" style="color: #D97706; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: rgba(245, 158, 11, 0.12); border-radius: var(--radius-md); font-size: 0.85rem; color: #FCD34D; display: flex; align-items: flex-start; gap: 0.75rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+        <svg class="icon icon-sm" style="color: #F59E0B; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         <div>
           <strong>Important Note:</strong> Always include your Booking Reference (<strong>{{ booking.reference_code }}</strong>) in the bank transfer memo to ensure fast verification.
         </div>
@@ -36,9 +36,9 @@
     </div>
 
     <!-- Payment Verification Form -->
-    <div style="background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200);">
-      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Submit Payment Reference</h2>
-      <p style="font-size: 0.9rem; color: var(--color-slate-600); margin-bottom: 1.5rem;">
+    <div style="background: var(--surface); padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); color: #FFFFFF;">
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #FFFFFF;">Submit Payment Reference</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
         After making your transfer, submit your transaction reference number and optional receipt for staff verification.
       </p>
 

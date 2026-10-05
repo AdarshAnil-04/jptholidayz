@@ -14,10 +14,10 @@
       min-height: 100vh;
     }
     .sidebar {
-      background: var(--color-navy);
+      background: var(--navy-deep);
       color: #FFFFFF;
       padding: 1.75rem 1.25rem;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid var(--border);
     }
     .sidebar-menu {
       list-style: none;
@@ -30,35 +30,39 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      color: var(--color-slate-300);
+      color: var(--text-muted);
       padding: 0.75rem 1rem;
       border-radius: var(--radius-md);
       font-weight: 500;
       font-size: 0.95rem;
+      transition: all var(--transition-fast);
     }
-    .sidebar-link:hover, .sidebar-link.active {
-      background: var(--color-navy-light);
+    .sidebar-link:hover {
+      background: var(--navy-light);
       color: #FFFFFF;
     }
     .sidebar-link.active {
-      background: var(--color-gold);
+      background: var(--gradient-purple-blue);
       color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(124, 92, 252, 0.3);
     }
     .dashboard-main {
-      background: var(--color-slate-50);
+      background: var(--background);
       padding: 2rem 2.5rem;
+      color: var(--text-main);
     }
     .stat-card {
-      background: #FFFFFF;
+      background: var(--surface);
       padding: 1.5rem;
       border-radius: var(--radius-lg);
-      border: 1px solid var(--color-slate-200);
+      border: 1px solid var(--border);
       box-shadow: var(--shadow-sm);
+      color: #FFFFFF;
     }
     .stat-number {
       font-size: 2rem;
       font-weight: 800;
-      color: var(--color-navy);
+      color: var(--turquoise);
       margin-top: 0.3rem;
     }
     @media (max-width: 900px) {

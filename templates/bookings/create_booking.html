@@ -16,7 +16,7 @@
 </div>
 
 <div class="container" style="padding: 4rem 1.5rem;">
-  <div style="max-width: 720px; margin: 0 auto; background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-lg);" data-reveal>
+  <div style="max-width: 720px; margin: 0 auto; background: var(--surface); padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-lg);" data-reveal>
     
     <!-- Important Business Rule Disclaimer -->
     <div class="alert alert-warning" style="margin-bottom: 2rem; border-radius: var(--radius-lg);">
@@ -32,7 +32,7 @@
     <form method="post" action="{% url 'bookings:create' package_slug=package.slug %}" data-loading-state>
       {% csrf_token %}
       
-      <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: var(--navy);">
+      <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: #FFFFFF;">
         1. Lead Passenger Details
       </h3>
 
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: var(--navy);">
+      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: #FFFFFF;">
         2. Travel Dates &amp; Traveler Count
       </h3>
 
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: var(--navy);">
+      <h3 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); color: #FFFFFF;">
         3. Pickup &amp; Special Preferences
       </h3>
 

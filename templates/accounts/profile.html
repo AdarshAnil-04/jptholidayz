@@ -19,8 +19,8 @@
 
 <div class="container" style="padding: 4rem 1.5rem;">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
-    <div style="background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm);" data-reveal>
-      <h2 style="font-size: 1.35rem; margin-bottom: 1.25rem; color: var(--navy); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Personal Information</h2>
+    <div style="background: var(--surface); padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm);" data-reveal>
+      <h2 style="font-size: 1.35rem; margin-bottom: 1.25rem; color: #FFFFFF; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Personal Information</h2>
       <form method="post" enctype="multipart/form-data" data-loading-state>
         {% csrf_token %}
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -42,7 +42,7 @@
           {{ user_form.phone }}
         </div>
         
-        <h3 style="font-size: 1.15rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--navy); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Travel Preferences &amp; Contact</h3>
+        <h3 style="font-size: 1.15rem; margin-top: 2rem; margin-bottom: 1rem; color: #FFFFFF; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Travel Preferences &amp; Contact</h3>
         <div class="form-group">
           <label class="form-label">Residential Address</label>
           {{ profile_form.address }}

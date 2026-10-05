@@ -3,11 +3,11 @@
 {% block dashboard_content %}
 <div style="max-width: 750px; margin: 0 auto;">
   <div style="margin-bottom: 2rem;">
-    <h1 style="font-size: 2rem;">Site Configuration & Brand Settings</h1>
-    <p style="color: var(--color-slate-600);">Configure agency contact info, currency, phone numbers, and default placeholders.</p>
+    <h1 style="font-size: 2rem; color: #FFFFFF;">Site Configuration & Brand Settings</h1>
+    <p style="color: var(--text-muted);">Configure agency contact info, currency, phone numbers, and default placeholders.</p>
   </div>
 
-  <div style="background: #FFFFFF; padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-slate-200); box-shadow: var(--shadow-sm);">
+  <div style="background: var(--surface); padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: #FFFFFF;">
     <form method="post" action="{% url 'dashboard:settings' %}">
       {% csrf_token %}
       
